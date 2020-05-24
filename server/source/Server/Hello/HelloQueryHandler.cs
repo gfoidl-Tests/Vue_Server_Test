@@ -13,7 +13,7 @@ namespace Server.Hello
             _webHostEnvironment = webHostEnvironment;
         }
         //---------------------------------------------------------------------
-        public Task<HelloResponse> Handle(HelloQuery request, CancellationToken cancellationToken)
+        public Task<HelloResponse> Handle(HelloQuery request, CancellationToken cancellationToken = default)
         {
             string msg   = $"Hello '{request.Name}' from {_webHostEnvironment.ApplicationName}";
             var response = new HelloResponse(msg);

@@ -1,3 +1,5 @@
+using System;
+
 namespace Server.Hello
 {
     public readonly struct HelloQuery : IQuery<HelloResponse>
@@ -6,7 +8,7 @@ namespace Server.Hello
         //---------------------------------------------------------------------
         public HelloQuery(string? name)
         {
-            this.Name = name ?? throw new System.ArgumentNullException(nameof(name));
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
     }
 }

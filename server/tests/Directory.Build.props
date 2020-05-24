@@ -1,0 +1,19 @@
+<Project>
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Moq" Version="4.14.1" />
+        <PackageReference Include="Moq.Analyzers" Version="0.0.8" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\shared\AbstractLogger.cs" Link="AbstractLogger.cs" />
+    </ItemGroup>
+
+</Project>

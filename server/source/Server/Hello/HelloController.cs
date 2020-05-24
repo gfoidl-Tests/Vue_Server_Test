@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Server.Hello
 {
@@ -14,10 +15,13 @@ namespace Server.Hello
         //---------------------------------------------------------------------
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult<HelloResponse>> Hello(string? name, CancellationToken cancellationToken)
+        public async Task<ActionResult<HelloResponse>> Hello(string? name, CancellationToken cancellationToken = default)
         {
-            var httpContext = this.HttpContext;
-            _logger.LogTrace("Connection id: {ConnectionId}", httpContext.Connection.Id);
+            HttpContext? httpContext = this.HttpContext;
+            if (httpContext != null)
+            {
+                _logger.LogTrace("Connection id: {ConnectionId}", httpContext.Connection.Id);
+            }
 
             try
             {
