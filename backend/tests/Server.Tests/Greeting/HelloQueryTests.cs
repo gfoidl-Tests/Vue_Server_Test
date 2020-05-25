@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Server.Hello;
+using Server.Greeting;
 
-namespace Server.Tests.Hello
+namespace Server.Tests.Greeting
 {
     [TestFixture]
     public class HelloQueryTests

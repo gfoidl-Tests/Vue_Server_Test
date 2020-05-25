@@ -4,20 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Server.Hello;
+using Server.Greeting;
 
-namespace Server.Tests.Hello.HelloControllerTests
+namespace Server.Tests.Greeting.GreetingControllerTests
 {
     [TestFixture]
     public class Hello
     {
-        private readonly Mock<ILogger<HelloController>> _loggerMock = new Mock<ILogger<HelloController>>();
+        private readonly Mock<ILogger<GreetingController>> _loggerMock = new Mock<ILogger<GreetingController>>();
         //---------------------------------------------------------------------
         [Test]
         public async Task Name_given___200()
         {
             var eventMock = new Mock<IEventDispatcher>(MockBehavior.Strict);
-            var sut       = new HelloController(eventMock.Object, _loggerMock.Object);
+            var sut       = new GreetingController(eventMock.Object, _loggerMock.Object);
             var response  = new HelloResponse("test");
 
             eventMock
@@ -40,7 +40,7 @@ namespace Server.Tests.Hello.HelloControllerTests
         [Test]
         public async Task Name_is_null___400()
         {
-            var sut = new HelloController(Mock.Of<IEventDispatcher>(MockBehavior.Strict), _loggerMock.Object);
+            var sut = new GreetingController(Mock.Of<IEventDispatcher>(MockBehavior.Strict), _loggerMock.Object);
 
             ActionResult<HelloResponse> result = await sut.Hello(null);
 

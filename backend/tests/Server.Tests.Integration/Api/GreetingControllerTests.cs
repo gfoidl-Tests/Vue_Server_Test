@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
-using Server.Hello;
+using Server.Greeting;
 
 namespace Server.Tests.Integration.Api
 {
-    public class HelloControllerTests : IntegrationTestBase
+    public class GreetingControllerTests : IntegrationTestBase
     {
         private HttpClient CreateHttpClient(Mock<IEventDispatcher> mock)
         {
             return _factory.WithWebHostBuilder(builder =>
             {
-                var loggerMock = new Mock<AbstractLogger<HelloController>>();
+                var loggerMock = new Mock<AbstractLogger<GreetingController>>();
 
                 builder.ConfigureTestServices(services =>
                 {
@@ -33,7 +33,7 @@ namespace Server.Tests.Integration.Api
         {
             HttpClient client = this.CreateHttpClient(new Mock<IEventDispatcher>(MockBehavior.Strict));
 
-            HttpResponseMessage httpResponse = await client.GetAsync("/api/hello");
+            HttpResponseMessage httpResponse = await client.GetAsync("/api/greeting/hello");
 
             Assert.Multiple(async () =>
             {
@@ -59,7 +59,7 @@ namespace Server.Tests.Integration.Api
 
             HttpClient client = this.CreateHttpClient(eventMock);
 
-            HttpResponseMessage httpResponse = await client.GetAsync("/api/hello?name=tester");
+            HttpResponseMessage httpResponse = await client.GetAsync("/api/greeting/hello?name=tester");
 
             Assert.Multiple(async () =>
            {

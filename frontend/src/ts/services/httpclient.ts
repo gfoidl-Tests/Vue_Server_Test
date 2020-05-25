@@ -1,6 +1,7 @@
-import Axios, { AxiosInstance, CancelToken } from "axios";
-//import * as http                             from "http";
-//import * as https                            from "https";
+import Axios, { AxiosInstance, CancelToken, AxiosError } from "axios";
+//import * as http  from "http";
+//import * as https from "https";
+import * as httpErrors from "./httpclient-errors";
 //-----------------------------------------------------------------------------
 export interface IHttpClient {
     /**
@@ -18,6 +19,8 @@ export interface IHttpClient {
      * ```
      */
     get<TResponse>(url: string, cancellationToken?: CancelToken): Promise<TResponse>;
+    //-------------------------------------------------------------------------
+    post<TRequest, TResponse>(url: string, data: TRequest, cancellationToken?: CancelToken): Promise<TResponse>;
 }
 //-----------------------------------------------------------------------------
 export class HttpClient implements IHttpClient {
@@ -42,15 +45,30 @@ export class HttpClient implements IHttpClient {
 
             return response.data;
         } catch (error) {
-            if (error.response) {
-                console.error(`Failed at response for ${url}`, error.response);
-            } else if (error.request) {
-                console.error(`Failed at request for ${url}`, error.request);
-            } else {
-                console.error(`Failed request for ${url}`, error.message);
-            }
+            this.handleError(url, error);
+        }
+    }
+    //-------------------------------------------------------------------------
+    public async post<TRequest, TResponse>(url: string, data: TRequest, cancellationToken?: CancelToken): Promise<TResponse> {
+        try {
+            const response = await HttpClient.s_axiosInstance.post<TResponse>(url, data, {
+                cancelToken: cancellationToken
+            });
 
-            throw error;
+            return response.data;
+        } catch (error) {
+            this.handleError(url, error);
+        }
+    }
+    //-------------------------------------------------------------------------
+    private handleError(url: string, error: AxiosError): never {
+        if (error.response) {
+            const response = error.response;
+            throw new httpErrors.HttpResponseError(url, response.status, response.statusText, response.data);
+        } else if (error.request) {
+            throw new httpErrors.HttpRequestError(url);
+        } else {
+            throw new httpErrors.GenericHttpError(url);
         }
     }
 }

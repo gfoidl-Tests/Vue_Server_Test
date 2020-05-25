@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 
-namespace Server.Hello
+namespace Server.Greeting
 {
-    public class HelloController : ApiController
+    public class GreetingController : ApiController
     {
-        public HelloController(IEventDispatcher eventDispatcher, ILogger<HelloController> logger)
+        public GreetingController(IEventDispatcher eventDispatcher, ILogger<GreetingController> logger)
             : base(eventDispatcher, logger)
         { }
         //---------------------------------------------------------------------
-        [HttpGet]
+        [HttpGet("hello")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult<HelloResponse>> Hello(string? name, CancellationToken cancellationToken = default)
         {
@@ -25,8 +25,11 @@ namespace Server.Hello
 
             try
             {
-                var query = new HelloQuery(name);
-                return this.Ok(await _eventDispatcher.Get(query, cancellationToken));
+                var query              = new HelloQuery(name);
+                HelloResponse response = await _eventDispatcher.Get(query, cancellationToken);
+                response.ConnectionId  = httpContext?.Connection.Id;
+
+                return this.Ok(response);
             }
             catch (ArgumentNullException e)
             {

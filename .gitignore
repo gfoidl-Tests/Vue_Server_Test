@@ -5,3 +5,5 @@ bin
 /backend/tests/Server.Tests.Integration/Properties
 node_modules
 wwwroot
+log.txt
+log.json

@@ -1,6 +1,6 @@
 using System;
 
-namespace Server.Hello
+namespace Server.Greeting
 {
     public readonly struct HelloQuery : IQuery<HelloResponse>
     {

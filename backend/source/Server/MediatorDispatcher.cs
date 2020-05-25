@@ -26,6 +26,11 @@ namespace Server
             return _mediator.Send(command, cancellationToken);
         }
         //---------------------------------------------------------------------
+        public Task Handle(IRequest request, CancellationToken cancellationToken = default)
+        {
+            return _mediator.Send(request, cancellationToken);
+        }
+        //---------------------------------------------------------------------
         public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
             where TNotification : INotification
         {

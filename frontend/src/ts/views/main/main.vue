@@ -19,6 +19,14 @@
                 </b-row>
             </b-col>
         </b-row>
+
+        <hr />
+
+        <b-row>
+            <b-col>
+                <b-button id="errorButton" variant="outline-info" @click="throwError">Throw unhandled error</b-button>
+            </b-col>
+        </b-row>
     </b-container>
 </template>
 
@@ -29,16 +37,11 @@
 </style>
 
 <script lang="ts">
-    import { Vue, Component }  from "vue-property-decorator";
-    import setupBootstrap      from "@/setup-bootstrap";
-    import WinstonLoggerPlugin from "@svc/logger-plugin";
-    import HttpClientPlugin    from "@svc/httpclient-plugin";
-
-    import HelloResponse from "./hello-response";
+    import { Vue, Component } from "vue-property-decorator";
+    import setupBootstrap     from "@/setup-bootstrap";
+    import GreetingService    from "./greeting-service";
+    import { Nullable }       from "@ext/types";
     //-------------------------------------------------------------------------
-    Vue.use(WinstonLoggerPlugin);
-    Vue.use(HttpClientPlugin);
-
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
     if (BOOTSTRAP_SKIP === undefined || !BOOTSTRAP_SKIP) {
@@ -49,18 +52,20 @@
     //-------------------------------------------------------------------------
     @Component
     export default class MainView extends Vue {
+        private _greetingService: Nullable<GreetingService> = null;
+        //---------------------------------------------------------------------
         public name   : string = "";
         public message: string = "";
         //---------------------------------------------------------------------
+        private mounted(): void {
+            console.debug("mounted at", new Date());
+
+            // For Vue this won't work in the ctor, that's why it's here.
+            this._greetingService = new GreetingService(this.$http);
+        }
+        //---------------------------------------------------------------------
         public async sayHi(): Promise<void> {
-            const url = `hello?name=${this.name}`;
-
-            this.$logger.debug(`sending request to ${url}`);
-
-            const response = await this.$http.get<HelloResponse>(url);
-            this.message   = response.message;
-
-            this.$logger.info({ message: "got response from server", data: response });
+            this.message = await this._greetingService!.hello(this.name);
         }
         //---------------------------------------------------------------------
         public reset(): void {
@@ -68,8 +73,8 @@
             this.message = "";
         }
         //---------------------------------------------------------------------
-        private mounted(): void {
-            this.$logger.debug({ message: "mounted", at: new Date() });
+        public throwError(): void {
+            throw new Error("Test for unhandled error");
         }
     }
 </script>

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 
 namespace Server
 {
@@ -57,6 +59,23 @@ namespace Server
                 app.UseHttpsRedirection();
                 app.UseHsts();
             }
+
+            app.UseSerilogRequestLogging(options =>
+            {
+                options.GetLevel = (httpContext, elapsed, ex) =>
+                {
+                    if (ex != null)      return LogEventLevel.Error;
+                    if (elapsed > 1_000) return LogEventLevel.Warning;
+                    return LogEventLevel.Debug;
+                };
+
+                options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+                {
+                    diagnosticContext.Set("RequestHost"  , httpContext.Request.Host.Value);
+                    diagnosticContext.Set("Client-IP"    , httpContext.Connection.RemoteIpAddress);
+                    diagnosticContext.Set("Connection-ID", httpContext.Connection.Id);
+                };
+            });
 
             app.UseStaticFiles();
 

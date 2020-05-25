@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Moq;
 using NUnit.Framework;
-using Server.Hello;
+using Server.Greeting;
 
-namespace Server.Tests.Hello
+namespace Server.Tests.Greeting
 {
     [TestFixture]
     public class HelloQueryHandlerTests

@@ -3,10 +3,11 @@
         "baseUrl": ".",
         "paths"  : {
             "@/*"    : [ "src/ts/*" ],
-            "@svc/*" : [ "src/ts/services/*" ],
             "@cmp/*" : [ "src/ts/components/*" ],
-            "@view/*": [ "src/ts/views/*" ],
-            "@img/*" : [ "src/images/*" ]
+            "@ext/*" : [ "src/ts/extensions/*" ],
+            "@img/*" : [ "src/images/*" ],
+            "@svc/*" : [ "src/ts/services/*" ],
+            "@view/*": [ "src/ts/views/*" ]
         },
 
         "target"          : "ES2015",

@@ -19,6 +19,7 @@ namespace Server
     {
         Task<TResponse> Get<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = default);
         Task<TResponse> Send<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default);
+        Task Handle(IRequest request, CancellationToken cancellationToken = default);
         //---------------------------------------------------------------------
         Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification;
         Task PublishFireAndForget<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification;

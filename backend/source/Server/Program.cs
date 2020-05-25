@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Server
 {
@@ -16,6 +17,10 @@ namespace Server
                    .ConfigureWebHostDefaults(webBuilder =>
                    {
                        webBuilder.UseStartup<Startup>();
+                   })
+                   .UseSerilog((hostingContext, loggerConfiguration) =>
+                   {
+                       SerilogHelper.Setup(loggerConfiguration, hostingContext.Configuration);
                    });
     }
 }
