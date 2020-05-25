@@ -11,8 +11,6 @@ const TerserPlugin               = require("terser-webpack-plugin");
 const TsconfigPathsPlugin        = require("tsconfig-paths-webpack-plugin");
 const VueLoaderPlugin            = require("vue-loader/lib/plugin");
 const Webpack                    = require("webpack");
-const WebpackPwaManifest         = require("webpack-pwa-manifest");
-const WorkboxPlugin              = require("workbox-webpack-plugin");
 
 // https://github.com/webpack-contrib/webpack-bundle-analyzer
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer");
@@ -169,25 +167,7 @@ module.exports = (env, argv) => {
                     if (/\.gif$/.test(entry)) return "image";
                     return "script";
                 }
-            }),
-            new WebpackPwaManifest({
-                filename        : "../manifest.[hash:8].json",
-                name            : "Vue Test",
-                fingerprints    : !devMode,
-                publicPath      : "",                   // leave start_url out, to use default which serves from page-root by .
-                descriptions    : "Playground for Vue's setup with test-frameworks",
-                theme_color     : "#007bff",
-                background_color: "#ffffff",
-                icons           : [
-                    {
-                        src        : path.resolve(__dirname, "src", "images", "calculator.png"),
-                        sizes      : [96, 128, 192, 256, 384, 512],
-                        destination: "icons"
-                    }
-                ]
             })
-            // workbox doesn't play nice with watch-mode, so inject these plugins separate (see below)
-            // See also https://github.com/GoogleChrome/workbox/issues/1790
         ],
         optimization: {
             runtimeChunk: "single",
@@ -242,29 +222,6 @@ module.exports = (env, argv) => {
     if (!runsInDevServer) {
         config.plugins.unshift(new CleanWebpackPlugin());
         console.log("added CleanWebpackPlugin");
-    }
-
-    // Due workbox not playing nice with watch-mode, inject these plugins here
-    // when not in watch-mode (also see comment above in the plugins).
-    if (!argv.watch && !runsInDevServer) {
-        const workboxPlugin =
-            //new WorkboxPlugin.GenerateSW({
-            //    swDest                       : "../sw.js",  // for the scope of the site, this should be at the root
-            //    clientsClaim                 : true,
-            //    skipWaiting                  : true,
-            //    cleanupOutdatedCaches        : true,
-            //    maximumFileSizeToCacheInBytes: 4 * 1024 * 1024
-            //});
-            // This plugin injects the workbox code into a template given by `swSrc`.
-            // More setup cost, but more possibilities.
-            // With GenerateSW the file given with `swSrc` isn't needed. All is done by workbox.
-            new WorkboxPlugin.InjectManifest({
-                swSrc                        : path.resolve(__dirname, "src", "ts", "service-worker.ts"),
-                swDest                       : "../sw.js",  // for the scope of the site, this should be at the root
-                maximumFileSizeToCacheInBytes: 4 * 1024 * 1024
-            });
-
-        config.plugins.push(workboxPlugin);
     }
 
     if (process.env.ANALYZE) {

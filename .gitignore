@@ -3,3 +3,5 @@ bin
 .vs
 *.user
 /backend/tests/Server.Tests.Integration/Properties
+node_modules
+/frontend/dist

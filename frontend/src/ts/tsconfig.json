@@ -1,0 +1,8 @@
+{
+    "extends"        : "../../tsconfig.json",
+    "compilerOptions": {
+        "module"        : "ESNext", // ES2015 allows more optimizations for webpack, ESNext async imports
+        "types"         : [],       // don't include any visible types, otherwise build-failure (from @jest, etc. may result)
+        "removeComments": false     // to have magic webpack comments
+    }
+}
