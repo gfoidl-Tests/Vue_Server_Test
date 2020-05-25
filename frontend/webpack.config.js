@@ -54,7 +54,7 @@ module.exports = (env, argv) => {
             plugins: [new TsconfigPathsPlugin({ configFile: tsConfigFile })]
         },
         output: {
-            path      : path.resolve(__dirname, "dist", "assets"),
+            path      : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot", "assets"),
             // Don't make it relative to root (i.e. no leading /), so that it can be hosted everywhere (e.g. GH-pages)
             // Trailing / is mandatory, as the strings are just concatenated instead of handled properly :-(
             publicPath: "assets/",
@@ -154,7 +154,7 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackPlugin({
                 template: "../index.html",
-                filename: path.resolve(__dirname, "dist", "index.html")
+                filename: path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot", "index.html"),
             }),
             new PreloadWebpackPlugin({
                 rel          : "preload",
@@ -206,7 +206,7 @@ module.exports = (env, argv) => {
         },
         devtool: "cheap-source-map",                    // https://webpack.js.org/configuration/devtool/
         devServer: {
-            contentBase       : path.resolve(__dirname, "dist"),
+            contentBase       : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot"),
             watchContentBase  : true,
             historyApiFallback: true
             // proxy doesn't work with Windows-Auth
