@@ -138,6 +138,8 @@ module.exports = (env, argv) => {
             new Webpack.DefinePlugin({
                 __DEBUG__     : JSON.stringify(devMode),
                 VERSION       : JSON.stringify(gitRevisionPlugin.version()),
+                BASE_URL      : JSON.stringify("/"),    // for use with proxy, otherwise use line below
+                //BASE_URL      : JSON.stringify(devMode ? "https://localhost:44369/" : "/"),
                 BOOTSTRAP_SKIP: false
             }),
             new Webpack.HashedModuleIdsPlugin(),
@@ -204,15 +206,22 @@ module.exports = (env, argv) => {
                 new OptimizeCssPlugin({})
             ]
         },
-        devtool: "cheap-source-map",                    // https://webpack.js.org/configuration/devtool/
+        devtool  : "cheap-source-map",                  // https://webpack.js.org/configuration/devtool/
         devServer: {
             contentBase       : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot"),
             watchContentBase  : true,
-            historyApiFallback: true
+            historyApiFallback: true,
             // proxy doesn't work with Windows-Auth
-            //proxy             : {
-            //  "/api": "http://localhost:58712"
-            //}
+            proxy             : {
+                "/api": {
+                    target: "https://localhost:44369",
+                    secure: false                       // for HTTPS with self-signed certificate    
+                }
+            }
+        },
+        // Hack for "Can't resolve 'fs'" (from winston), cf. https://webpack.js.org/configuration/node/ and https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
+        node: {
+            fs: "empty"
         }
     };
 

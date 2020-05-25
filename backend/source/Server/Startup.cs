@@ -73,7 +73,8 @@ namespace Server
                 app.UseCors(policy => policy
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .WithOrigins("http://localhost:5000"));
+                    //.AllowCredentials()   // on client (axios) the same must be set
+                    .WithOrigins("http://localhost:8080"));
             }
 
             app.UseEndpoints(endpoints =>
