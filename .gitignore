@@ -2,3 +2,4 @@ obj
 bin
 .vs
 *.user
+/server/tests/Server.Tests.Integration/Properties
