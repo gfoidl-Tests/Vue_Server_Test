@@ -10,7 +10,7 @@ module.exports = {
     // https://github.com/smooth-code/jest-puppeteer/blob/master/packages/jest-environment-puppeteer/README.md#jest-puppeteerconfigjs
     browserContext: "incognito",
     server        : {
-        command : "yarn serve dist --no-clipboard --listen 8080",
+        command : "yarn start-server",
         port    : 8080,
         protocol: "http"
     }

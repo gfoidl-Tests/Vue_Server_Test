@@ -10,6 +10,7 @@
         "build-watch"  : "webpack --mode=development --watch",
         "build-release": "webpack --mode=production",
         "start"        : "webpack-dev-server --open chrome --hotOnly",
+        "start-server" : "serve ../backend/source/Server/wwwroot --no-clipboard --listen 8080",
         "test"         : "jest",
         "test-unit"    : "jest --projects tests/unit --verbose",
         "test-vue"     : "jest --projects tests/vue --verbose",

@@ -12,9 +12,9 @@
                 </b-form>
 
                 <b-row v-if="message.length > 0">
-                    <b-col id="messageCol">
+                    <b-col>
                         <hr />
-                        Message: <strong class="message">{{ message }}</strong>
+                        Message: <strong class="message" id="messageSpan">{{ message }}</strong>
                     </b-col>
                 </b-row>
             </b-col>

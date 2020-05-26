@@ -73,11 +73,11 @@ describe("Main.vue", () => {
         // https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue
         await flushPromises();
 
-        const messageCol = sut.find("#messageCol");
+        const messageSpan = sut.find("#messageSpan");
 
         expect(spy).toHaveBeenCalledWith("himen");
-        expect(messageCol.exists()).toBe(true);
-        expect(messageCol.text()).toBe("Message: Hi himen");
+        expect(messageSpan.exists()).toBe(true);
+        expect(messageSpan.text()).toBe("Hi himen");
         expect.assertions(3);
     });
 });
