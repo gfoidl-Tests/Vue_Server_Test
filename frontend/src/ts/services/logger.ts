@@ -16,15 +16,10 @@ interface Console {
 export default class Logger {
     public static init(): void {
         if (!__DEBUG__) {
-            if (console) {
-                //const logMethods = ["log", "info", "warn", "error", "debug"];
-                const logMethodsToDisable = ["log", "debug"];
-
-                for (const method of logMethodsToDisable) {
-                    ((console as unknown) as Console)[method] = function () { /**/ };
-                }
-            }
-
+            //const logMethodsToDisable = ["log", "info", "warn", "error", "debug"];
+            const logMethodsToDisable = ["log", "debug"];
+            Logger.removeConsoleLogging(logMethodsToDisable);
+            
             Vue.config.errorHandler = (err, _vm, info) => {
                 const errorData: ErrorData = {
                     message: err.message,
@@ -53,6 +48,12 @@ export default class Logger {
 
                 Logger.logUnhandledException(errorData);
             }
+        }
+    }
+    //-------------------------------------------------------------------------
+    private static removeConsoleLogging(logMethodsToDisable: string[]): void {
+        for (const method of logMethodsToDisable) {
+            ((console as unknown) as Console)[method] = function () { /**/ };
         }
     }
     //-------------------------------------------------------------------------

@@ -2,7 +2,7 @@
     <b-container>
         <b-row>
             <b-col>
-                <b-form @submit.prevent="sayHi" @reset.prevent="reset">
+                <b-form @submit.prevent="hello" @reset.prevent="reset">
                     <b-form-group id="nameGroup" label="Name" label-for="nameInput">
                         <b-form-input id="nameInput" v-model="name" required placeholder="Name" autocomplete="off"></b-form-input>
                     </b-form-group>
@@ -64,7 +64,7 @@
             this._greetingService = new GreetingService(this.$http);
         }
         //---------------------------------------------------------------------
-        public async sayHi(): Promise<void> {
+        public async hello(): Promise<void> {
             this.message = await this._greetingService!.hello(this.name);
         }
         //---------------------------------------------------------------------

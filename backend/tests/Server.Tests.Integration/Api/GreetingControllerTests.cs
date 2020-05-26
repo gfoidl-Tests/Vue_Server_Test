@@ -13,7 +13,7 @@ namespace Server.Tests.Integration.Api
 {
     public class GreetingControllerTests : IntegrationTestBase
     {
-        private HttpClient CreateHttpClient(Mock<IEventDispatcher> mock)
+        private HttpClient CreateHttpClient(Mock<IEventDispatcher> eventDispatcherMock)
         {
             return _factory.WithWebHostBuilder(builder =>
             {
@@ -21,7 +21,7 @@ namespace Server.Tests.Integration.Api
 
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped(_ => mock.Object);
+                    services.AddScoped(_ => eventDispatcherMock.Object);
                     services.AddScoped(_ => loggerMock.Object);
                 });
             })
