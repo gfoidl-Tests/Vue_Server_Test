@@ -44,7 +44,7 @@
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
-    if (BOOTSTRAP_SKIP === undefined || !BOOTSTRAP_SKIP) {
+    if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
         setupBootstrap();
     } else {
         console.debug("Skipping registration of BootstrapVue PlugIn");

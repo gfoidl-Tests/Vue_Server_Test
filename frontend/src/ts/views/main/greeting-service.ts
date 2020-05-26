@@ -11,12 +11,16 @@ export default class GreetingService {
     public async hello(name: string): Promise<string> {
         const url = `greeting/hello?name=${name}`;
 
-        console.debug(`sending request to ${url}`);
+        if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
+            console.debug(`sending request to ${url}`);
+        }
 
         const response = await this._httpClient.get<HelloResponse>(url);
         const message  = response.message;
 
-        console.info("got response from server", response);
+        if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
+            console.info("got response from server", response);
+        }
 
         return message;
     }

@@ -17,7 +17,7 @@ export default class Logger {
     public static init(): void {
         if (!__DEBUG__) {
             //const logMethodsToDisable = ["log", "info", "warn", "error", "debug"];
-            const logMethodsToDisable = ["log", "debug"];
+            const logMethodsToDisable = ["log", "debug", "time", "timeEnd"];
             Logger.removeConsoleLogging(logMethodsToDisable);
             
             Vue.config.errorHandler = (err, _vm, info) => {
@@ -60,7 +60,7 @@ export default class Logger {
     private static logUnhandledException(error: ErrorData): void {
         console.error("Unhandled error", error);
 
-        HttpClient.Default.post<ErrorData, void>("error/client", error);
+        HttpClient.Default.post<void>("error/client", error);
         console.info("sent error info to server");
     }
 }

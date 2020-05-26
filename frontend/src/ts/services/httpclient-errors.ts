@@ -1,20 +1,22 @@
 abstract class HttpError extends Error {
-    public url: string;
+    public url       : string;
+    public innerError: Error;
     //-------------------------------------------------------------------------
-    constructor(url: string, message: string, name = "HttpError") {
-        super(message);
-        this.name = name;
-        this.url  = url;
+    constructor(url: string, message: string, innerError: Error, name = "HttpError") {
+        super(`${message}\ninner: ${innerError.message}`);
+        this.name       = name;
+        this.url        = url;
+        this.innerError = innerError;
     }
 }
 //-----------------------------------------------------------------------------
 export class HttpResponseError extends HttpError {
-    public status: number;
+    public status    : number;
     public statusText: string;
-    public data: unknown;
+    public data      : unknown;
     //-------------------------------------------------------------------------
-    constructor(url: string, status: number, statusText: string, data: unknown) {
-        super(url, `Failed at response from ${url}`, "HttpResponseError");
+    constructor(url: string, status: number, statusText: string, data: unknown, innerError: Error) {
+        super(url, `Failed at response from '${url}'`, innerError, "HttpResponseError");
 
         this.status     = status;
         this.statusText = statusText;
@@ -23,13 +25,7 @@ export class HttpResponseError extends HttpError {
 }
 //-----------------------------------------------------------------------------
 export class HttpRequestError extends HttpError {
-    constructor(url: string) {
-        super(url, `Failed at request for ${url}`, "HttpRequestError");
-    }
-}
-//-----------------------------------------------------------------------------
-export class GenericHttpError extends HttpError {
-    constructor(url: string) {
-        super(url, `Generic failure at request for ${url}`, "GenericHttpError");
+    constructor(url: string, innerError: Error) {
+        super(url, `Failed at request for '${url}'`, innerError, "HttpRequestError");
     }
 }

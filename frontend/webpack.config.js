@@ -136,11 +136,11 @@ module.exports = (env, argv) => {
         plugins: [
             //gitRevisionPlugin,                        // uncomment to write VERSION and COMMITHASH files to output
             new Webpack.DefinePlugin({
-                __DEBUG__     : JSON.stringify(devMode),
-                VERSION       : JSON.stringify(gitRevisionPlugin.version()),
-                BASE_URL      : JSON.stringify("/"),    // for use with proxy, otherwise use line below
-                //BASE_URL      : JSON.stringify(devMode ? "https://localhost:44369/" : "/"),
-                BOOTSTRAP_SKIP: false
+                __DEBUG__        : JSON.stringify(devMode),
+                __VERSION__      : JSON.stringify(gitRevisionPlugin.version()),
+                __BASE_URL__     : JSON.stringify("/"), // for use with proxy, otherwise use line below
+                //__BASE_URL__     : JSON.stringify(devMode ? "https://localhost:44369/" : "/"),
+                __RUN_FROM_TEST__: false
             }),
             new Webpack.HashedModuleIdsPlugin(),
             new VueLoaderPlugin(),
