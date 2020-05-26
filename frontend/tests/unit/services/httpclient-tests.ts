@@ -100,7 +100,6 @@ describe("HttpClient", () => {
         //---------------------------------------------------------------------
         test("request error -> throws HttpRequestError", async () => {
             expect.assertions(1);
-
             await expect(HttpClient.Default.post("not-available"))
                 .rejects
                 .toThrowError(HttpRequestError);

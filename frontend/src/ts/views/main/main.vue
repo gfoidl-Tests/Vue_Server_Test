@@ -52,7 +52,11 @@
     //-------------------------------------------------------------------------
     @Component
     export default class MainView extends Vue {
-        private _greetingService: Nullable<GreetingService> = null;
+        // It should be private, so with _ or # (Ecma script) prefix.
+        // Vue uses _ internally, so this won't work.
+        // # is treated at CSS selector, so don't work either.
+        // Hence just keep it simple ;-)
+        greetingService: Nullable<GreetingService> = null;
         //---------------------------------------------------------------------
         public name   : string = "";
         public message: string = "";
@@ -61,11 +65,13 @@
             console.debug("mounted at", new Date());
 
             // For Vue this won't work in the ctor, that's why it's here.
-            this._greetingService = new GreetingService(this.$http);
+            this.greetingService = new GreetingService(this.$http);
         }
         //---------------------------------------------------------------------
         public async hello(): Promise<void> {
-            this.message = await this._greetingService!.hello(this.name);
+            this.message = await this.greetingService!.hello(this.name);
+
+            console.debug("message set to", this.message);
         }
         //---------------------------------------------------------------------
         public reset(): void {
