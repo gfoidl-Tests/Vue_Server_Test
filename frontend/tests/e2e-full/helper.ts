@@ -3,7 +3,7 @@ import * as path         from "path";
 import { ElementHandle } from "puppeteer";
 //-----------------------------------------------------------------------------
 export default class Helper {
-    static readonly s_screenShotDir = "screenshots-e2e";
+    static readonly s_screenShotDir = "screenshots-e2e-full";
     //-------------------------------------------------------------------------
     public static async takeScreenshot(name: string): Promise<void> {
         Helper.ensureDirExists();

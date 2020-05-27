@@ -12,6 +12,7 @@ module.exports = {
     server        : {
         command : "yarn start-server",
         port    : 8080,
-        protocol: "http"
+        protocol: "http",
+        debug   : false
     }
 };
