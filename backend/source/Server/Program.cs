@@ -10,6 +10,7 @@ namespace Server
         public static async Task Main(string[] args)
         {
             await CreateHostBuilder(args).Build().RunAsync();
+            Log.CloseAndFlush();
         }
         //---------------------------------------------------------------------
         public static IHostBuilder CreateHostBuilder(string[] args)

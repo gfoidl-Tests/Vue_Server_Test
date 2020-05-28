@@ -38,4 +38,11 @@ describe("App", () => {
 
         expect(message).toMatch(/himen/);
     });
+    //-------------------------------------------------------------------------
+    test("unhandled error -> sent to server", async () => {
+        await expect(page).toClick("#errorButton");
+
+        const expectedErrorUrl = `${baseUrl}/api/error/client`;
+        await page.waitForResponse(response => response.url() === expectedErrorUrl && /post/i.test(response.request().method()));
+    });
 });
