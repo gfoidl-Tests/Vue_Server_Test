@@ -1,28 +1,20 @@
 import PuppeteerHelper from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("App", () => {
-    const baseUrl = "http://localhost:5000";
+    const baseUrl = "https://localhost:5001";
     //-------------------------------------------------------------------------
     beforeAll(async () => {
         await page.goto(baseUrl);
     });
     //-------------------------------------------------------------------------
-    test("page title is 'Vue Server Test'", async () => {
-        await expect(page.title()).resolves.toMatch("Vue Server Test");
+    test("http to https redirection", async () => {
+        await page.goto("http://localhost:5000");
+
+        expect(page.url()).toBe("https://localhost:5001/");
     });
     //-------------------------------------------------------------------------
     test("takes screenshot so it can be stored as artifact", async () => {
-        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e-full");
-    });
-    //-------------------------------------------------------------------------
-    test("check if Vue started by checking #sendButton", async () => {
-        await expect(page).toMatchElement("#sendButton");
-    });
-    //-------------------------------------------------------------------------
-    test.skip("http to https redirection", async () => {
-        await page.goto("http://localhost:5000");
-
-        expect(page.url()).toBe("https://locahost:5001");
+        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e-full-iis");
     });
     //-------------------------------------------------------------------------
     test("request to backend -> ok", async () => {

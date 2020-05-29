@@ -2,12 +2,10 @@ import * as fs           from "fs";
 import * as path         from "path";
 import { ElementHandle } from "puppeteer";
 //-----------------------------------------------------------------------------
-export default class Helper {
-    static readonly s_screenShotDir = "screenshots-e2e";
-    //-------------------------------------------------------------------------
-    public static async takeScreenshot(name: string): Promise<void> {
-        Helper.ensureDirExists();
-        await page.screenshot({ path: path.resolve(Helper.s_screenShotDir, name) });
+export default class PuppeteerHelper {
+    public static async takeScreenshot(name: string, outputDir = "screenshots-e2e"): Promise<void> {
+        PuppeteerHelper.ensureDirExists(outputDir);
+        await page.screenshot({ path: path.resolve(outputDir, name) });
     }
     //-------------------------------------------------------------------------
     public static async isVisible(element: ElementHandle<Element>) {
@@ -23,9 +21,9 @@ export default class Helper {
         });
     }
     //-------------------------------------------------------------------------
-    private static ensureDirExists(): void {
-        if (!fs.existsSync(Helper.s_screenShotDir)) {
-            fs.mkdirSync(Helper.s_screenShotDir);
+    private static ensureDirExists(dir: string): void {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
         }
     }
 }
