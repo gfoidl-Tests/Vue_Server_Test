@@ -14,7 +14,7 @@ describe("App", () => {
     });
     //-------------------------------------------------------------------------
     test("takes screenshot so it can be stored as artifact", async () => {
-        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e-full-iis");
+        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e-full-server");
     });
     //-------------------------------------------------------------------------
     test("request to backend -> ok", async () => {

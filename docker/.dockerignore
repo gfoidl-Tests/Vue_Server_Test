@@ -1,3 +1,5 @@
+Dockerfile
+.dockerignore
 appsettings.Development.json
 *.pdb
 web.config
