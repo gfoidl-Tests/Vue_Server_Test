@@ -1,16 +1,18 @@
 import PuppeteerHelper from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("App", () => {
-    const baseUrl = "https://localhost:5001";
+    const baseUrl = process.env.HTTPS_BASE_URL || "https://localhost:5001";
     //-------------------------------------------------------------------------
     beforeAll(async () => {
         await page.goto(baseUrl);
     });
     //-------------------------------------------------------------------------
     test("http to https redirection", async () => {
-        await page.goto("http://localhost:5000");
+        const url = process.env.HTTP_BASE_URL || "http://localhost:5000";
 
-        expect(page.url()).toBe("https://localhost:5001/");
+        await page.goto(url);
+
+        expect(page.url()).toBe(`${baseUrl}/`);
     });
     //-------------------------------------------------------------------------
     test("takes screenshot so it can be stored as artifact", async () => {
