@@ -9,6 +9,20 @@ failures=0
 for logFile in *; do
     echo "verifying file: $logFile"
 
+    if [[ -n $VERIFY_LISTEN_ON ]]; then
+        if [[ $(cat $logFile | grep "Now listening on: " | wc -l) -eq 0 ]]; then
+            echo "    no log entry for host listening"
+            ((failures++))
+        fi
+    fi
+
+    if [[ -n $VERIFY_CLIENT_REQUEST ]]; then
+        if [[ $(cat $logFile | grep "/api/greeting/hello?name=" | wc -l) -eq 0 ]]; then
+            echo "    no log entry for client request"
+            ((failures++))
+        fi
+    fi
+
     if [[ $(cat $logFile | grep "Client error" | wc -l) -eq 0 ]]; then
         echo "    no log entry for client error"
         ((failures++))
