@@ -1,4 +1,4 @@
-import Helper from "./helper";
+import PuppeteerHelper from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("App start", () => {
     const baseUrl = "http://localhost:8080";
@@ -12,7 +12,7 @@ describe("App start", () => {
     });
     //-------------------------------------------------------------------------
     test("takes screenshot so it can be stored as artifact", async () => {
-        await Helper.takeScreenshot("normal.png");
+        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e");
     });
     //-------------------------------------------------------------------------
     test("check if Vue started by checking #sendButton", async () => {
