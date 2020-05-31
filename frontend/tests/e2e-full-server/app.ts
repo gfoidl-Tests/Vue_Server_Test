@@ -15,8 +15,11 @@ describe("App", () => {
         expect(page.url()).toBe(`${baseUrl}/`);
     });
     //-------------------------------------------------------------------------
-    test("takes screenshot so it can be stored as artifact", async () => {
-        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e-full-server");
+    test("screenshot -> matches snapshot", async () => {
+        const name       = "app-start";
+        const outputDir  = "screenshots-e2e-full-server";
+        const screenshot = await PuppeteerHelper.takeScreenshot(`${name}.png`, outputDir);
+        PuppeteerHelper.compareScreenshotToSnapshot(screenshot, name, outputDir);
     });
     //-------------------------------------------------------------------------
     test("request to backend -> ok", async () => {

@@ -1,11 +1,24 @@
-import * as fs           from "fs";
-import * as path         from "path";
-import { ElementHandle } from "puppeteer";
+import * as fs                  from "fs";
+import * as path                from "path";
+import { ElementHandle }        from "puppeteer";
+import { toMatchImageSnapshot } from "jest-image-snapshot";
+//-----------------------------------------------------------------------------
+expect.extend({ toMatchImageSnapshot });
 //-----------------------------------------------------------------------------
 export default class PuppeteerHelper {
-    public static async takeScreenshot(name: string, outputDir = "screenshots-e2e"): Promise<void> {
+    public static async takeScreenshot(name: string, outputDir = "screenshots-e2e"): Promise<unknown> {
         PuppeteerHelper.ensureDirExists(outputDir);
-        await page.screenshot({ path: path.resolve(outputDir, name) });
+        return await page.screenshot({ path: path.resolve(outputDir, name) });
+    }
+    //-------------------------------------------------------------------------
+    public static compareScreenshotToSnapshot(screenshot: unknown, name: string, diffDir = "screenshots-e2e"): void {
+        expect(screenshot).toMatchImageSnapshot({
+            customSnapshotsDir      : path.resolve("tests", "__image_snapshots__"),     // base dir is /frontend
+            customSnapshotIdentifier: name,
+            customDiffDir           : diffDir,
+            failureThresholdType    : "percent",
+            failureThreshold        : 0.5
+        });
     }
     //-------------------------------------------------------------------------
     public static async isVisible(element: ElementHandle<Element>) {
