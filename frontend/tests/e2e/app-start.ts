@@ -11,8 +11,11 @@ describe("App start", () => {
         await expect(page.title()).resolves.toMatch("Vue Server Test");
     });
     //-------------------------------------------------------------------------
-    test("takes screenshot so it can be stored as artifact", async () => {
-        await PuppeteerHelper.takeScreenshot("normal.png", "screenshots-e2e");
+    test("screenshot -> matches snapshot", async () => {
+        const name       = "app-start";
+        const outputDir  = "screenshots-e2e";
+        const screenshot = await PuppeteerHelper.takeScreenshot(`${name}.png`, outputDir);
+        PuppeteerHelper.compareScreenshotToSnapshot(screenshot, name, outputDir);
     });
     //-------------------------------------------------------------------------
     test("check if Vue started by checking #sendButton", async () => {
