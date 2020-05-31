@@ -1,13 +1,15 @@
-module.exports = {
-    // https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+
+const baseConfig = require("../../jest-puppeteer.config");
+//-----------------------------------------------------------------------------
+const config = {
+    ...baseConfig,
     launch: {
-        devtools         : false,
-        headless         : process.env.HEADLESS !== "false",
-        slowMo           : process.env.SLOWMO,
-        dumpio           : process.env.DUMPIO,
+        ...baseConfig.launch,
         ignoreHTTPSErrors: true
-    },
-    // User Incognito to avoid sharing the browser context between tests
-    // https://github.com/smooth-code/jest-puppeteer/blob/master/packages/jest-environment-puppeteer/README.md#jest-puppeteerconfigjs
-    browserContext: "incognito"
+    }
 };
+delete config.server;
+
+console.log("\njest-puppeteer.config", config);
+
+module.exports = config;
