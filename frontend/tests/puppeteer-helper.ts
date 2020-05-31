@@ -15,7 +15,9 @@ export default class PuppeteerHelper {
         expect(screenshot).toMatchImageSnapshot({
             customSnapshotsDir      : path.resolve("tests", "__image_snapshots__"),     // base dir is /frontend
             customSnapshotIdentifier: name,
-            customDiffDir           : diffDir
+            customDiffDir           : diffDir,
+            failureThresholdType    : "percent",
+            failureThreshold        : 0.5
         });
     }
     //-------------------------------------------------------------------------
