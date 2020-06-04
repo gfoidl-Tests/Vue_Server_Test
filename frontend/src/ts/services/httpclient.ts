@@ -80,7 +80,7 @@ export class HttpClient implements IHttpClient {
             const logMsg = `get for '${url}'`;
 
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug(`starting get ${logMsg}`);
+                console.debug(`starting ${logMsg}`);
                 console.time(logMsg);
             }
 
@@ -103,7 +103,7 @@ export class HttpClient implements IHttpClient {
             const logMsg = `post for '${url}'`;
 
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug(`starting post ${url}`);
+                console.debug(`starting ${url}`);
                 console.time(logMsg);
             }
 
