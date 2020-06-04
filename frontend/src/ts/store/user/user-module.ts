@@ -29,13 +29,18 @@ class User extends VuexModule {
     @Action
     public async hello() {
         const message = await this._greetingService.hello(this.name);
-        this.context.commit("setMessage", message);
+
+        //this.context.commit("setMessage", message);
+        userModule.setMessage(message);
     }
     //-------------------------------------------------------------------------
     @Action
     public reset(): void {
-        this.context.commit("resetName");
-        this.context.commit("resetMessage");
+        //this.context.commit("resetName");
+        //this.context.commit("resetMessage");
+
+        userModule.resetName();
+        userModule.resetMessage();
     }
     //-------------------------------------------------------------------------
     @Mutation
