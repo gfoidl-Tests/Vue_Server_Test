@@ -1,4 +1,4 @@
-import MainView                           from "@view/main/main.vue";
+import MainView                           from "@view/main.vue";
 import GreetingService                    from "@store/user/greeting-service";
 import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import BootstrapVue                       from "bootstrap-vue";

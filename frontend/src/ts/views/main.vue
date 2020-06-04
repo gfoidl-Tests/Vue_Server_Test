@@ -38,8 +38,8 @@
 
 <script lang="ts">
     import { Vue, Component } from "vue-property-decorator";
-    import setupBootstrap     from "@/setup-bootstrap";
     import { userModule }     from "@store/user/user-module";
+    import setupBootstrap     from "@/setup-bootstrap";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
