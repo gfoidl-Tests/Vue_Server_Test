@@ -1,7 +1,8 @@
 import MainView                           from "@view/main/main.vue";
-import GreetingService                    from "@view/main/greeting-service";
+import GreetingService                    from "@store/user/greeting-service";
 import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import BootstrapVue                       from "bootstrap-vue";
+import Vuex                               from "vuex";
 import * as flushPromises                 from "flush-promises";
 //-----------------------------------------------------------------------------
 describe("Main.vue", () => {
@@ -10,6 +11,7 @@ describe("Main.vue", () => {
     beforeEach(() => {
         const localVue = createLocalVue();
         localVue.use(BootstrapVue);
+        localVue.use(Vuex);
 
         sut = mount(MainView, { localVue });
     });

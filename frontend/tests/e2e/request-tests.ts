@@ -1,4 +1,4 @@
-import HelloResponse from "@view/main/hello-response";
+import HelloResponse from "@store/user/hello-response";
 //-----------------------------------------------------------------------------
 describe("Requests", () => {
     const baseUrl = "http://localhost:8080";

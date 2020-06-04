@@ -1,7 +1,11 @@
 import Vue  from "vue";
 import Vuex from "vuex";
 //-----------------------------------------------------------------------------
-Vue.use(Vuex);
+// Fabalouse hack for testing with jest, otherwise there are some
+// failures which seem strange to me...
+if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
+    Vue.use(Vuex);
+}
 //-----------------------------------------------------------------------------
 // Empty store, modules will be added dynamically.
 // Thus keeping the initial bundle small.
