@@ -2,12 +2,13 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths"  : {
-            "@/*"    : [ "src/ts/*" ],
-            "@cmp/*" : [ "src/ts/components/*" ],
-            "@ext/*" : [ "src/ts/extensions/*" ],
-            "@img/*" : [ "src/images/*" ],
-            "@svc/*" : [ "src/ts/services/*" ],
-            "@view/*": [ "src/ts/views/*" ]
+            "@/*"     : [ "src/ts/*" ],
+            "@cmp/*"  : [ "src/ts/components/*" ],
+            "@ext/*"  : [ "src/ts/extensions/*" ],
+            "@img/*"  : [ "src/images/*" ],
+            "@svc/*"  : [ "src/ts/services/*" ],
+            "@store/*": [ "src/ts/store/*" ],
+            "@view/*" : [ "src/ts/views/*" ]
         },
 
         "target"          : "ES2015",

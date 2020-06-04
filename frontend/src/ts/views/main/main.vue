@@ -39,8 +39,7 @@
 <script lang="ts">
     import { Vue, Component } from "vue-property-decorator";
     import setupBootstrap     from "@/setup-bootstrap";
-    import GreetingService    from "./greeting-service";
-    import { Nullable }       from "@ext/types";
+    import { userModule }     from "@store/user/user-module";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -52,31 +51,26 @@
     //-------------------------------------------------------------------------
     @Component
     export default class MainView extends Vue {
-        // It should be private, so with _ or # (Ecma script) prefix.
-        // Vue uses _ internally, so this won't work.
-        // # is treated at CSS selector, so don't work either.
-        // Hence just keep it simple ;-)
-        greetingService: Nullable<GreetingService> = null;
-        //---------------------------------------------------------------------
-        public name   : string = "";
-        public message: string = "";
-        //---------------------------------------------------------------------
-        private mounted(): void {
-            console.debug("mounted at", new Date());
+        public get name(): string {
+            return userModule.name;
+        }
 
-            // For Vue this won't work in the ctor, that's why it's here.
-            this.greetingService = new GreetingService(this.$http);
+        public set name(value: string) {
+            userModule.setName(value);
         }
         //---------------------------------------------------------------------
-        public async hello(): Promise<void> {
-            this.message = await this.greetingService!.hello(this.name);
-
-            console.debug("message set to", this.message);
+        public get message(): string {
+            return userModule.message;
+        }
+        //---------------------------------------------------------------------
+        public hello(): void {
+            //this.$store.dispatch("user/hello");
+            userModule.hello();
         }
         //---------------------------------------------------------------------
         public reset(): void {
-            this.name    = "";
-            this.message = "";
+            //this.$store.dispatch("user/reset");
+            userModule.reset();
         }
         //---------------------------------------------------------------------
         public throwError(): void {
