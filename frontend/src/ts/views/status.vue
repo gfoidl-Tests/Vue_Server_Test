@@ -15,16 +15,16 @@
 
 <script lang="ts">
     import { Vue, Component } from "vue-property-decorator";
-    import { userModule }     from "@store/user/user-module";
+    import { userStore }      from "@store/user/user-store";
     //-------------------------------------------------------------------------
     @Component
     export default class StatusView extends Vue {
         public get name(): string {
-            return userModule.name;
+            return userStore.name;
         }
         //---------------------------------------------------------------------
         public get message(): string {
-            return userModule.message;
+            return userStore.message;
         }
     }
 </script>

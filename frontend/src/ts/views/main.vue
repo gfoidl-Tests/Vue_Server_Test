@@ -38,7 +38,7 @@
 
 <script lang="ts">
     import { Vue, Component } from "vue-property-decorator";
-    import { userModule }     from "@store/user/user-module";
+    import { userStore }      from "@store/user/user-store";
     import setupBootstrap     from "@/setup-bootstrap";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
@@ -52,25 +52,25 @@
     @Component
     export default class MainView extends Vue {
         public get name(): string {
-            return userModule.name;
+            return userStore.name;
         }
 
         public set name(value: string) {
-            userModule.setName(value);
+            userStore.setName(value);
         }
         //---------------------------------------------------------------------
         public get message(): string {
-            return userModule.message;
+            return userStore.message;
         }
         //---------------------------------------------------------------------
         public hello(): void {
             //this.$store.dispatch("user/hello");
-            userModule.hello();
+            userStore.hello();
         }
         //---------------------------------------------------------------------
         public reset(): void {
             //this.$store.dispatch("user/reset");
-            userModule.reset();
+            userStore.reset();
         }
         //---------------------------------------------------------------------
         public throwError(): void {

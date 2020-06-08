@@ -31,7 +31,7 @@ class User extends VuexModule {
         const message = await this._greetingService.hello(this.name);
 
         //this.context.commit("setMessage", message);
-        userModule.setMessage(message);
+        userStore.setMessage(message);
     }
     //-------------------------------------------------------------------------
     @Action
@@ -39,8 +39,8 @@ class User extends VuexModule {
         //this.context.commit("resetName");
         //this.context.commit("resetMessage");
 
-        userModule.resetName();
-        userModule.resetMessage();
+        userStore.resetName();
+        userStore.resetMessage();
     }
     //-------------------------------------------------------------------------
     @Mutation
@@ -54,4 +54,4 @@ class User extends VuexModule {
     }
 }
 //-----------------------------------------------------------------------------
-export const userModule = getModule(User);
+export const userStore = getModule(User);
