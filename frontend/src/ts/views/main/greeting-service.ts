@@ -1,11 +1,11 @@
-import { IHttpClient } from "@svc/httpclient";
-import HelloResponse   from "./hello-response";
+import { IHttpClient, HttpClient } from "@svc/httpclient";
+import HelloResponse               from "./hello-response";
 //-----------------------------------------------------------------------------
 export default class GreetingService {
     private readonly _httpClient: IHttpClient;
     //-------------------------------------------------------------------------
-    constructor(httpClient: IHttpClient) {
-        this._httpClient = httpClient;
+    constructor(httpClient?: IHttpClient) {
+        this._httpClient = httpClient ?? HttpClient.Default;
     }
     //-------------------------------------------------------------------------
     public async hello(name: string): Promise<string> {

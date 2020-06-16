@@ -65,7 +65,7 @@
             console.debug("mounted at", new Date());
 
             // For Vue this won't work in the ctor, that's why it's here.
-            this.greetingService = new GreetingService(this.$http);
+            this.greetingService = new GreetingService();
         }
         //---------------------------------------------------------------------
         public async hello(): Promise<void> {

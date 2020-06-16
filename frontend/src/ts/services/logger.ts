@@ -1,5 +1,4 @@
-import Vue            from "vue";
-import { HttpClient } from "./httpclient";
+import Vue from "vue";
 //-----------------------------------------------------------------------------
 interface ErrorData {
     message: string;
@@ -57,8 +56,10 @@ export default class Logger {
         }
     }
     //-------------------------------------------------------------------------
-    private static logUnhandledException(error: ErrorData): void {
+    private static async logUnhandledException(error: ErrorData): Promise<void> {
         console.error("Unhandled error", error);
+
+        const HttpClient = (await import("./httpclient")).HttpClient;
 
         HttpClient.Default.post<void>("error/client", error);
         console.info("sent error info to server");
