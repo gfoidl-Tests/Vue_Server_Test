@@ -10,3 +10,4 @@ log.json
 /frontend/coverage
 /frontend/junit.xml
 /frontend/screenshots*
+*.tsbuildinfo

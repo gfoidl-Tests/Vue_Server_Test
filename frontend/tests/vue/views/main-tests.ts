@@ -20,10 +20,6 @@ describe("Main.vue", () => {
         }
     });
     //-------------------------------------------------------------------------
-    test("test wrapper created -> correct name", () => {
-        expect(sut.name()).toBe("MainView");
-    });
-    //-------------------------------------------------------------------------
     test("no name entered -> sendButton disabled, no message shown", () => {
         const sendButton = sut.get("#sendButton");
         expect(sendButton.attributes("disabled")).toBe("disabled");

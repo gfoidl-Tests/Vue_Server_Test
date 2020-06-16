@@ -145,10 +145,14 @@ module.exports = (env, argv) => {
             new Webpack.HashedModuleIdsPlugin(),
             new VueLoaderPlugin(),
             new ForkTsCheckerWebpackPlugin({
-                tsconfig   : tsConfigFile,
-                async      : false,
-                memoryLimit: 4096,
-                vue        : true
+                async     : false,
+                typescript: {
+                    configFile : tsConfigFile,
+                    memoryLimit: 4096,
+                    extensions: {
+                        vue: true
+                    }
+                },
             }),
             new MiniCssExtractPlugin({
                 filename     : devMode ? "[name].css" : "[name].[contenthash:8].css",
