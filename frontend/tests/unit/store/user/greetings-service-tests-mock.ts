@@ -4,7 +4,7 @@ import { HttpClient }  from "@svc/httpclient";
 //-----------------------------------------------------------------------------
 jest.mock("@svc/httpclient");
 const MockedHttpClient = (HttpClient as unknown) as jest.Mock<HttpClient>;
-const mockedHttpClient = new MockedHttpClient() as jest.Mocked<HttpClient>;
+const mockedHttpClient = new MockedHttpClient()  as jest.Mocked<HttpClient>;
 const sut              = new GreetingService(mockedHttpClient);
 //-----------------------------------------------------------------------------
 afterEach(() => {

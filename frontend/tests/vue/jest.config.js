@@ -13,6 +13,9 @@ module.exports = {
     testMatch: [
         "**/tests/vue/**/*.ts"
     ],
+    modulePathIgnorePatterns: [
+        "store/vuex-test-utils.ts"
+    ],
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>" }),
         "\\.(css|less)$": "<rootDir>/tests/vue/__mocks__/styleMock.js"
@@ -24,6 +27,7 @@ module.exports = {
     //},
     globals: {
         __RUN_FROM_TEST__: true,
+        __DEBUG__        : false,
         __VERSION__      : "42",
         __BASE_URL__     : "http://localhost/"
     }

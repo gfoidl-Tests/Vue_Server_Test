@@ -1,4 +1,3 @@
-
 const baseConfig = require("../../jest-puppeteer.config");
 //-----------------------------------------------------------------------------
 const config = {

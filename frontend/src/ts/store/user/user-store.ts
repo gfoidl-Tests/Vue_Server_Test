@@ -1,17 +1,18 @@
 import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
-import store           from "@store/index";
-import GreetingService from "./greeting-service";
-import { HttpClient }  from "@svc/httpclient";
+import { moduleOptions }                                   from "../module-options";
+import GreetingService                                     from "./greeting-service";
+import { HttpClient }                                      from "@svc/httpclient";
 //-----------------------------------------------------------------------------
-// https://github.com/championswimmer/vuex-module-decorators/issues/131
-if (store.hasModule("user")) {
-    console.debug("store: module user is registered, unregister it");
-    store.unregisterModule("user");
+export const moduleName = "user";
+//-----------------------------------------------------------------------------
+export interface UserState {
+    name   : string;
+    message: string;
 }
 //-----------------------------------------------------------------------------
-@Module({ namespaced: true, name: "user", dynamic: true, store })
-class User extends VuexModule {
-    private _greetingService = new GreetingService(HttpClient.Default);
+@Module(moduleOptions(moduleName))
+export class UserStore extends VuexModule implements UserState {
+    private readonly _greetingService = new GreetingService(HttpClient.Default);
     //-------------------------------------------------------------------------
     public name    = "";
     public message = "";
@@ -19,28 +20,8 @@ class User extends VuexModule {
     @Mutation
     public setName(name: string): void {
         this.name = name;
-    }
-    //-------------------------------------------------------------------------
-    @Mutation
-    public setMessage(message: string): void {
-        this.message = message;
-    }
-    //-------------------------------------------------------------------------
-    @Action
-    public async hello() {
-        const message = await this._greetingService.hello(this.name);
 
-        //this.context.commit("setMessage", message);
-        userStore.setMessage(message);
-    }
-    //-------------------------------------------------------------------------
-    @Action
-    public reset(): void {
-        //this.context.commit("resetName");
-        //this.context.commit("resetMessage");
-
-        userStore.resetName();
-        userStore.resetMessage();
+        //console.debug(`name set to ${name}`);
     }
     //-------------------------------------------------------------------------
     @Mutation
@@ -49,9 +30,31 @@ class User extends VuexModule {
     }
     //-------------------------------------------------------------------------
     @Mutation
+    public setMessage(message: string): void {
+        this.message = message;
+    }
+    //-------------------------------------------------------------------------
+    @Mutation
     private resetMessage(): void {
         this.message = "";
     }
+    //-------------------------------------------------------------------------
+    @Action
+    public async hello(): Promise<void> {
+        const message = await this._greetingService.hello(this.name);
+
+        //this.context.commit("setMessage", message);
+        this.setMessage(message);
+    }
+    //-------------------------------------------------------------------------
+    @Action
+    public reset(): void {
+        //this.context.commit("resetName");
+        //this.context.commit("resetMessage");
+
+        this.resetName();
+        this.resetMessage();
+    }
 }
 //-----------------------------------------------------------------------------
-export const userStore = getModule(User);
+export const userStore = getModule(UserStore);

@@ -13,7 +13,7 @@
 //-----------------------------------------------------------------------------
 import { HttpClient }                          from "@svc/httpclient";
 import Axios                                   from "axios";
-import * as nock                               from "nock";
+import nock                                    from "nock";
 import { HttpResponseError, HttpRequestError } from "@svc/httpclient-errors";
 //import { mocked }                              from "ts-jest/utils";
 //-----------------------------------------------------------------------------

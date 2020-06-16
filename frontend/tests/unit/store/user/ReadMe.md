@@ -1,4 +1,4 @@
-All test files here test the same. The difference is in the mocking-behavior.
+All tests for `greeting-service-tests-*.ts`) are the same. The difference is in the mocking-behavior.
 
 For me the best approach is `jest.spyOn`.
 
