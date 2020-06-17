@@ -3,13 +3,12 @@
 </template>
 
 <script lang="ts">
-    import { Vue, Component } from "vue-property-decorator";
+    import { Vue, Options }         from "vue-class-component";
+    import { defineAsyncComponent } from "vue";
 
-    const MainView = () => ({
-        component: import(/* webpackChunkName: "main", webpackPreload: true */ "@view/main/main.vue") as any     // https://github.com/vuejs/vue-class-component/issues/323#issuecomment-479834166
-    });
+    const MainView = defineAsyncComponent(() => import(/* webpackChunkName: "main", webpackPreload: true */ "@view/main/main-wo-bootstrap.vue"));
     //-------------------------------------------------------------------------
-    @Component({
+    @Options({
         components: {
             MainView
         }

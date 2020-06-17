@@ -1,22 +1,25 @@
-import MainView                           from "@view/main/main.vue";
-import GreetingService                    from "@view/main/greeting-service";
-import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
-import BootstrapVue                       from "bootstrap-vue";
-import * as flushPromises                 from "flush-promises";
+import MainView              from "@view/main/main-wo-bootstrap.vue";
+import GreetingService       from "@view/main/greeting-service";
+import { mount, VueWrapper } from "@vue/test-utils";
+//import BootstrapVue          from "bootstrap-vue";
+import * as flushPromises    from "flush-promises";
 //-----------------------------------------------------------------------------
 describe("Main.vue", () => {
-    let sut: Wrapper<MainView>;
+    let sut: VueWrapper<MainView>;
     //-------------------------------------------------------------------------
     beforeEach(() => {
-        const localVue = createLocalVue();
-        localVue.use(BootstrapVue);
+        // TODO: BootstrapVue
+        //const localVue = createLocalVue();
+        //localVue.use(BootstrapVue);
 
-        sut = mount(MainView, { localVue });
+        //sut = mount(MainView, { localVue });
+
+        sut = mount(MainView, { shallow: true });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
         if (sut) {
-            sut.destroy();
+            sut.unmount();
         }
     });
     //-------------------------------------------------------------------------

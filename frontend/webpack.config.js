@@ -9,7 +9,7 @@ const PreloadWebpackPlugin       = require("preload-webpack-plugin");
 const svgToMiniDataUri           = require("mini-svg-data-uri");
 const TerserPlugin               = require("terser-webpack-plugin");
 const TsconfigPathsPlugin        = require("tsconfig-paths-webpack-plugin");
-const VueLoaderPlugin            = require("vue-loader/lib/plugin");
+const { VueLoaderPlugin }        = require("vue-loader");
 const Webpack                    = require("webpack");
 
 // https://github.com/webpack-contrib/webpack-bundle-analyzer
@@ -150,7 +150,7 @@ module.exports = (env, argv) => {
                     configFile : tsConfigFile,
                     memoryLimit: 4096,
                     extensions: {
-                        vue: true
+                        vue: false                      // TODO: update, is not ready for vue3
                     }
                 },
             }),
