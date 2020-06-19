@@ -29,9 +29,11 @@ function reset(): void {
     messageRef.value = "";
 }
 //-----------------------------------------------------------------------------
-export default {
-    name,
-    message,
-    hello,
-    reset
-};
+export default function useUserStore() {
+    return {
+        name,
+        message,
+        hello,
+        reset
+    };
+}

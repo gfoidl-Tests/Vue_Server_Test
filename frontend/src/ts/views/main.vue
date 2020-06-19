@@ -39,7 +39,7 @@
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
     import setupBootstrap      from "@/setup-bootstrap";
-    import UserStore           from "@store/user/user";
+    import useUserStore        from "@store/user/user";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -55,16 +55,19 @@
     //-------------------------------------------------------------------------
     const component = defineComponent({
         setup() {
+            // Deconstruct for easier use in the view-model
+            const { name, message, hello, reset } = useUserStore();
+
             // Returns the "view model"
             // All the types returned could come from different places, and they
             // are "composed" here -- hence the name.
             // It's all about the view model, and this doesn't need to be a class,
             // rather it's a "loose" coupling of types that are used by the view.
             return {
-                name   : UserStore.name,
-                message: UserStore.message,
-                hello  : UserStore.hello,
-                reset  : UserStore.reset,
+                name,
+                message,
+                hello,
+                reset,
                 throwError
             };
         }
