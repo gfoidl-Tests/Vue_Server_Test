@@ -3,6 +3,8 @@
         <form-view></form-view>
         <hr />
         <status-view></status-view>
+        <hr />
+        <history-view></history-view>
     </div>
 </template>
 
@@ -11,8 +13,9 @@
     import { defineComponent }  from "@vue/composition-api";
     import { provideUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
-    import FormView   from "./form.vue";
-    import StatusView from "./status.vue";
+    import FormView    from "./form.vue";
+    import StatusView  from "./status.vue";
+    import HistoryView from "./history.vue";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -25,7 +28,8 @@
     const component = defineComponent({
         components: {
             FormView,
-            StatusView
+            StatusView,
+            HistoryView
         },
         setup() {
             // This provides an instance of the user-store, which can be used

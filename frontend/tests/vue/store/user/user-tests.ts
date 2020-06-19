@@ -45,7 +45,8 @@ describe("UserStore", () => {
 
             expect(mockHello).toHaveBeenCalledWith("batman");
             expect(userStore.message.value).toBe("Hi batman");
-            expect.assertions(2);
+            expect(userStore.messageHistory.value[0]).toBe("Hi batman");
+            expect.assertions(3);
         });
         //---------------------------------------------------------------------
         test("different name given --> message set", async () => {
@@ -58,7 +59,27 @@ describe("UserStore", () => {
 
             expect(mockHello).toHaveBeenCalledWith("clayman");
             expect(userStore.message.value).toBe("Hi clayman");
-            expect.assertions(2);
+            expect(userStore.messageHistory.value[0]).toBe("Hi clayman");
+            expect.assertions(3);
+        });
+    });
+    //-------------------------------------------------------------------------
+    describe("removeFromHistory", () => {
+        test("empty history --> nothing happens", () => {
+            const userStore = createUserStore();
+
+            userStore.removeFromHistory(1);
+        });
+        //---------------------------------------------------------------------
+        test("filled history --> message removed", async () => {
+            const userStore = createUserStore();
+
+            userStore.name.value = "himen";
+            await userStore.hello();
+
+            userStore.removeFromHistory(0);
+
+            expect(userStore.messageHistory.value.length).toBe(0);
         });
     });
     //-------------------------------------------------------------------------
@@ -73,7 +94,8 @@ describe("UserStore", () => {
 
             expect(userStore.name.value)   .toBe("");
             expect(userStore.message.value).toBe("");
-            expect.assertions(2);
+            expect(userStore.messageHistory.value.length).toBe(0);
+            expect.assertions(3);
         });
     });
 });

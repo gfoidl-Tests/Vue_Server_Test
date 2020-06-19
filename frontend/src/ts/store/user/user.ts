@@ -8,32 +8,46 @@ import { ref, computed, provide, inject } from "@vue/composition-api";
 import GreetingService                    from "./greeting-service";
 //-----------------------------------------------------------------------------
 export function createUserStore(greetingServiceInjected?: GreetingService) {
-    const nameRef         = ref("");
-    const messageRef      = ref("");
-    const greetingService = greetingServiceInjected ?? new GreetingService();
+    const nameRef           = ref("");
+    const messageRef        = ref("");
+    const messageHistoryRef = ref(new Array<string>());
+    const greetingService   = greetingServiceInjected ?? new GreetingService();
     //-------------------------------------------------------------------------
     const name = computed({
         get: ()  => nameRef.value,
         set: val => nameRef.value = val
     });
 
-    const message = computed(() => messageRef.value);
+    const message        = computed(() => messageRef.value);
+    const messageHistory = computed(() => messageHistoryRef.value);
     //-------------------------------------------------------------------------
     async function hello(): Promise<void> {
-        messageRef.value = await greetingService.hello(nameRef.value);
+        const message = await greetingService.hello(nameRef.value);
+
+        messageRef.value = message;
+        messageHistoryRef.value.push(message);
 
         console.debug("message set to", messageRef.value);
     }
     //-------------------------------------------------------------------------
+    function removeFromHistory(index: number): void {
+        const removed = messageHistoryRef.value.splice(index, 1);
+
+        console.debug("Removed item from history (index, message):", index, removed);
+    }
+    //-------------------------------------------------------------------------
     function reset(): void {
-        nameRef.value    = "";
-        messageRef.value = "";
+        nameRef.value           = "";
+        messageRef.value        = "";
+        messageHistoryRef.value = [];
     }
     //-------------------------------------------------------------------------
     const store = {
         name,
         message,
+        messageHistory,
         hello,
+        removeFromHistory,
         reset
     };
 
