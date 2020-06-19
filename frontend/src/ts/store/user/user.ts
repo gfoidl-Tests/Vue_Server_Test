@@ -42,7 +42,7 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
         messageHistoryRef.value = [];
     }
     //-------------------------------------------------------------------------
-    const store = {
+    return {
         name,
         message,
         messageHistory,
@@ -50,8 +50,6 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
         removeFromHistory,
         reset
     };
-
-    return store;
 }
 //-----------------------------------------------------------------------------
 // Note: declare is optional

@@ -20,7 +20,7 @@
     </b-container>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
     li {
         list-style: square;
     }
