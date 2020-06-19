@@ -37,9 +37,9 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent, ref, computed } from "@vue/composition-api";
-    import setupBootstrap                     from "@/setup-bootstrap";
-    import GreetingService                    from "./greeting-service";
+    import { defineComponent } from "@vue/composition-api";
+    import setupBootstrap      from "@/setup-bootstrap";
+    import UserStore           from "@store/user/user";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -47,21 +47,6 @@
         setupBootstrap();
     } else {
         console.debug("Skipping registration of BootstrapVue PlugIn");
-    }
-    //-------------------------------------------------------------------------
-    const name            = ref("");
-    const message         = ref("");
-    const greetingService = new GreetingService();
-    //-------------------------------------------------------------------------
-    async function hello(): Promise<void> {
-        message.value = await greetingService.hello(name.value);
-
-        console.debug("message set to", message.value);
-    }
-    //-------------------------------------------------------------------------
-    function reset(): void {
-        name.value    = "";
-        message.value = "";
     }
     //-------------------------------------------------------------------------
     function throwError(): void {
@@ -76,13 +61,10 @@
             // It's all about the view model, and this doesn't need to be a class,
             // rather it's a "loose" coupling of types that are used by the view.
             return {
-                name: computed<string>({
-                    get: ()  => name.value,
-                    set: val => name.value = val
-                }),
-                message: computed(() => message.value),
-                hello,
-                reset,
+                name   : UserStore.name,
+                message: UserStore.message,
+                hello  : UserStore.hello,
+                reset  : UserStore.reset,
                 throwError
             };
         }

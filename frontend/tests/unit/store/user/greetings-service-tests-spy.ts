@@ -1,5 +1,5 @@
-import GreetingService from "@view/main/greeting-service";
-import HelloResponse   from "@view/main/hello-response";
+import GreetingService from "@store/user/greeting-service";
+import HelloResponse   from "@store/user/hello-response";
 import { HttpClient }  from "@svc/httpclient";
 //-----------------------------------------------------------------------------
 describe("GreetingService with spy", () => {

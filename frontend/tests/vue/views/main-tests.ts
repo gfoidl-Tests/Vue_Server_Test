@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 const mockHello = jest.fn();
 
-jest.mock("@view/main/greeting-service", () => {
+jest.mock("@store/user/greeting-service", () => {
     return {
         __esModule: true,   // necessary for the default export, otherwise MockedGreetingService will have a `default` property
         default   : jest.fn().mockImplementation(() => {
@@ -16,8 +16,8 @@ jest.mock("@view/main/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import MainView                           from "@view/main/main.vue";
-import GreetingService                    from "@view/main/greeting-service";
+import MainView                           from "@view/main.vue";
+import GreetingService                    from "@store/user/greeting-service";
 import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import BootstrapVue                       from "bootstrap-vue";
 import flushPromises                      from "flush-promises";
