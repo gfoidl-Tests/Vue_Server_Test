@@ -3,14 +3,19 @@
         <form-view></form-view>
         <hr />
         <status-view></status-view>
+        <hr />
+        <history-view></history-view>
     </div>
 </template>
 
 <script lang="ts">
-    import setupBootstrap from "@/setup-bootstrap";
+    import setupBootstrap       from "@/setup-bootstrap";
+    import { defineComponent }  from "@vue/composition-api";
+    import { provideUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
-    import FormView   from "./form.vue";
-    import StatusView from "./status.vue";
+    import FormView    from "./form.vue";
+    import StatusView  from "./status.vue";
+    import HistoryView from "./history.vue";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -20,10 +25,22 @@
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }
     //-------------------------------------------------------------------------
-    export default {
+    const component = defineComponent({
         components: {
             FormView,
-            StatusView
+            StatusView,
+            HistoryView
+        },
+        setup() {
+            // This provides an instance of the user-store, which can be used
+            // by `useUserStore` and the state is shared.
+            // A different component could create a new store with different
+            // (new) state.
+            // That's the advantage of the provide-inject-pattern over
+            // "global" state in the store.
+            provideUserStore();
         }
-    };
+    });
+    //-------------------------------------------------------------------------
+    export default component;
 </script>

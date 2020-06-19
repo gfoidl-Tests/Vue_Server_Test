@@ -9,21 +9,21 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import StatusView                                    from "@view/status.vue";
+import HistoryView                                   from "@view/history.vue";
 import { createLocalVue, Wrapper }                   from "@vue/test-utils";
 import { mountComposition }                          from "../mount-composition";
 import BootstrapVue                                  from "bootstrap-vue";
 import { provideUserStore, useUserStore, UserStore } from "@store/user/user";
 //-----------------------------------------------------------------------------
-describe("Status.vue", () => {
-    let sut      : Wrapper<StatusView>;
+describe("History.vue", () => {
+    let sut      : Wrapper<HistoryView>;
     let userStore: UserStore;
     //-------------------------------------------------------------------------
     beforeEach(() => {
         const localVue = createLocalVue();
         localVue.use(BootstrapVue);
 
-        sut = mountComposition(StatusView, localVue, () => {
+        sut = mountComposition(HistoryView, localVue, () => {
             provideUserStore();
             userStore = useUserStore();
         });
@@ -35,24 +35,29 @@ describe("Status.vue", () => {
         }
     });
     //-------------------------------------------------------------------------
-    test("empty store --> empty fields", () => {
-        const nameCol    = sut.get("#nameCol");
-        const messageCol = sut.get("#messageCol");
-
-        expect(nameCol.text())   .toBe("Name:");
-        expect(messageCol.text()).toBe("Message:");
+    test("empty store --> history not rendered", () => {
+        expect(sut.find("#historyList").exists()).toBe(false);
     });
     //-------------------------------------------------------------------------
-    test("name and message set in store --> fields updated", async () => {
-        const { name, hello } = userStore;
+    test("message set in store --> history list shown with correct item(s)", async () => {
+        userStore.name.value = "batman";
+        await userStore.hello();
 
-        name.value = "batman";
-        await hello();
+        const dataTestItems = sut.findAll("[data-test='history']");
 
-        const nameCol    = sut.get("#nameCol");
-        const messageCol = sut.get("#messageCol");
+        expect(sut.find("#historyList").exists()).toBe(true);
+        expect(dataTestItems.length).toBe(1);
+        expect(dataTestItems.at(0).text()).toMatch(/Hi batman/);
+        expect.assertions(3);
+    });
+    //-------------------------------------------------------------------------
+    test("delete history --> item removed", async () => {
+        userStore.name.value = "batman";
+        await userStore.hello();
 
-        expect(nameCol.text())   .toBe("Name: batman");
-        expect(messageCol.text()).toBe("Message: Hi batman");
+        const removeButton = sut.get("#deleteButton_0");
+        await removeButton.trigger("click");
+
+        expect(sut.find("#historyList").exists()).toBe(false);
     });
 });

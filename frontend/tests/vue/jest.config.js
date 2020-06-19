@@ -13,6 +13,9 @@ module.exports = {
     testMatch: [
         "**/tests/vue/**/*.ts"
     ],
+    modulePathIgnorePatterns: [
+        "mount-composition.ts"
+    ],
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>" }),
         "\\.(css|less)$": "<rootDir>/tests/vue/__mocks__/styleMock.js"

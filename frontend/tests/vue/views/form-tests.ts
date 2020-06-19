@@ -16,11 +16,13 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import FormView                           from "@view/form.vue";
-import GreetingService                    from "@store/user/greeting-service";
-import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
-import BootstrapVue                       from "bootstrap-vue";
-import flushPromises                      from "flush-promises";
+import FormView                    from "@view/form.vue";
+import { provideUserStore }        from "@store/user/user";
+import GreetingService             from "@store/user/greeting-service";
+import { createLocalVue, Wrapper } from "@vue/test-utils";
+import { mountComposition }        from "../mount-composition";
+import BootstrapVue                from "bootstrap-vue";
+import flushPromises               from "flush-promises";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -36,7 +38,9 @@ describe("Main.vue", () => {
         const localVue = createLocalVue();
         localVue.use(BootstrapVue);
 
-        sut = mount(FormView, { localVue });
+        sut = mountComposition(FormView, localVue, () => {
+            provideUserStore();
+        });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {

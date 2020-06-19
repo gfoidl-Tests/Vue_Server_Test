@@ -38,7 +38,7 @@
 
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
-    import useUserStore        from "@store/user/user";
+    import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     function throwError(): void {
         throw new Error("Test for unhandled error");

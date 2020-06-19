@@ -13,8 +13,8 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import useUserStore    from "@store/user/user";
-import GreetingService from "@store/user/greeting-service";
+import { createUserStore } from "@store/user/user";
+import GreetingService     from "@store/user/greeting-service";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ beforeEach(() => {
 describe("UserStore", () => {
     describe("name", () => {
         test("set name", () => {
-            const { name } = useUserStore();
+            const { name } = createUserStore();
 
             name.value = "Himen";
             
@@ -36,40 +36,66 @@ describe("UserStore", () => {
     //-------------------------------------------------------------------------
     describe("hello", () => {
         test("name given --> correct message set", async () => {
-            const { name, hello, message } = useUserStore();
-            name.value = "batman";
+            const userStore = createUserStore();
+            userStore.name.value = "batman";
 
             mockHello.mockResolvedValue("Hi batman");
 
-            await hello();
+            await userStore.hello();
 
             expect(mockHello).toHaveBeenCalledWith("batman");
-            expect(message.value).toBe("Hi batman");
-            expect.assertions(2);
+            expect(userStore.message.value).toBe("Hi batman");
+            expect(userStore.messageHistory.value[0]).toBe("Hi batman");
+            expect.assertions(3);
         });
         //---------------------------------------------------------------------
         test("different name given --> message set", async () => {
-            const { name, hello, message } = useUserStore();
-            name.value = "clayman";
+            const userStore = createUserStore();
+            userStore.name.value = "clayman";
 
             mockHello.mockResolvedValue("Hi clayman");
 
-            await hello();
+            await userStore.hello();
 
             expect(mockHello).toHaveBeenCalledWith("clayman");
-            expect(message.value).toBe("Hi clayman");
-            expect.assertions(2);
+            expect(userStore.message.value).toBe("Hi clayman");
+            expect(userStore.messageHistory.value[0]).toBe("Hi clayman");
+            expect.assertions(3);
+        });
+    });
+    //-------------------------------------------------------------------------
+    describe("removeFromHistory", () => {
+        test("empty history --> nothing happens", () => {
+            const userStore = createUserStore();
+
+            userStore.removeFromHistory(1);
+        });
+        //---------------------------------------------------------------------
+        test("filled history --> message removed", async () => {
+            const userStore = createUserStore();
+
+            userStore.name.value = "himen";
+            await userStore.hello();
+
+            userStore.removeFromHistory(0);
+
+            expect(userStore.messageHistory.value.length).toBe(0);
         });
     });
     //-------------------------------------------------------------------------
     describe("reset", () => {
-        test("resets properties", () => {
-            const { reset, name, message } = useUserStore();
+        test("resets properties", async () => {
+            const userStore = createUserStore();
 
-            reset();
+            userStore.name.value = "himen";
+            await userStore.hello();
 
-            expect(name.value)   .toBe("");
-            expect(message.value).toBe("");
+            userStore.reset();
+
+            expect(userStore.name.value)   .toBe("");
+            expect(userStore.message.value).toBe("");
+            expect(userStore.messageHistory.value.length).toBe(0);
+            expect.assertions(3);
         });
     });
 });

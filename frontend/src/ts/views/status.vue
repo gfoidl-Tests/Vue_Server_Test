@@ -15,7 +15,7 @@
 
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
-    import useUserStore        from "@store/user/user";
+    import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     const component = defineComponent({
         setup() {
