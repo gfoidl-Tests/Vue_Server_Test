@@ -1,8 +1,33 @@
+// The mock-setup must be the first thing in the test-file, otherwise
+// there's a ReferenceError for `mockHello` (use before initialization)
+//-----------------------------------------------------------------------------
+const mockHello = jest.fn();
+
+jest.mock("@view/main/greeting-service", () => {
+    return {
+        __esModule: true,   // necessary for the default export, otherwise MockedGreetingService will have a `default` property
+        default   : jest.fn().mockImplementation(() => {
+            return {
+                //hello: (name: string) => Promise.resolve(`Hi ${name}`)
+                //hello: jest.fn().mockResolvedValue("Hi himen")
+                hello: mockHello
+            };
+        })
+    };
+});
+//-----------------------------------------------------------------------------
 import MainView                           from "@view/main/main.vue";
 import GreetingService                    from "@view/main/greeting-service";
 import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import BootstrapVue                       from "bootstrap-vue";
-import * as flushPromises                 from "flush-promises";
+import flushPromises                      from "flush-promises";
+//-----------------------------------------------------------------------------
+const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
+//-----------------------------------------------------------------------------
+beforeEach(() => {
+    MockedGreetingService.mockClear();
+    mockHello.mockClear();
+});
 //-----------------------------------------------------------------------------
 describe("Main.vue", () => {
     let sut: Wrapper<MainView>;
@@ -61,9 +86,7 @@ describe("Main.vue", () => {
         const nameInput = sut.get("#nameInput");
         await nameInput.setValue("himen");
 
-        const greetingService = sut.vm.$data.greetingService as GreetingService;
-        const spy = jest.spyOn(greetingService, "hello")
-            .mockResolvedValue("Hi himen");
+        mockHello.mockResolvedValue("Hi himen");
 
         sut.get("form").trigger("submit");
         // https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue
@@ -71,7 +94,7 @@ describe("Main.vue", () => {
 
         const messageSpan = sut.find("#messageSpan");
 
-        expect(spy).toHaveBeenCalledWith("himen");
+        expect(mockHello).toHaveBeenCalledWith("himen");
         expect(messageSpan.exists()).toBe(true);
         expect(messageSpan.text()).toBe("Hi himen");
         expect.assertions(3);

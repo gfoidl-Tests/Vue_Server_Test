@@ -37,10 +37,9 @@
 </style>
 
 <script lang="ts">
-    import { Vue, Component } from "vue-property-decorator";
-    import setupBootstrap     from "@/setup-bootstrap";
-    import GreetingService    from "./greeting-service";
-    import { Nullable }       from "@ext/types";
+    import { defineComponent, ref, computed } from "@vue/composition-api";
+    import setupBootstrap                     from "@/setup-bootstrap";
+    import GreetingService                    from "./greeting-service";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -50,37 +49,44 @@
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }
     //-------------------------------------------------------------------------
-    @Component
-    export default class MainView extends Vue {
-        // It should be private, so with _ or # (Ecma script) prefix.
-        // Vue uses _ internally, so this won't work.
-        // # is treated at CSS selector, so don't work either.
-        // Hence just keep it simple ;-)
-        greetingService: Nullable<GreetingService> = null;
-        //---------------------------------------------------------------------
-        public name   : string = "";
-        public message: string = "";
-        //---------------------------------------------------------------------
-        private mounted(): void {
-            console.debug("mounted at", new Date());
+    const name            = ref("");
+    const message         = ref("");
+    const greetingService = new GreetingService();
+    //-------------------------------------------------------------------------
+    async function hello(): Promise<void> {
+        message.value = await greetingService.hello(name.value);
 
-            // For Vue this won't work in the ctor, that's why it's here.
-            this.greetingService = new GreetingService();
-        }
-        //---------------------------------------------------------------------
-        public async hello(): Promise<void> {
-            this.message = await this.greetingService!.hello(this.name);
-
-            console.debug("message set to", this.message);
-        }
-        //---------------------------------------------------------------------
-        public reset(): void {
-            this.name    = "";
-            this.message = "";
-        }
-        //---------------------------------------------------------------------
-        public throwError(): void {
-            throw new Error("Test for unhandled error");
-        }
+        console.debug("message set to", message.value);
     }
+    //-------------------------------------------------------------------------
+    function reset(): void {
+        name.value    = "";
+        message.value = "";
+    }
+    //-------------------------------------------------------------------------
+    function throwError(): void {
+        throw new Error("Test for unhandled error");
+    }
+    //-------------------------------------------------------------------------
+    const component = defineComponent({
+        setup() {
+            // Returns the "view model"
+            // All the types returned could come from different places, and they
+            // are "composed" here -- hence the name.
+            // It's all about the view model, and this doesn't need to be a class,
+            // rather it's a "loose" coupling of types that are used by the view.
+            return {
+                name: computed<string>({
+                    get: ()  => name.value,
+                    set: val => name.value = val
+                }),
+                message: computed(() => message.value),
+                hello,
+                reset,
+                throwError
+            };
+        }
+    });
+    //-------------------------------------------------------------------------
+    export default component;
 </script>

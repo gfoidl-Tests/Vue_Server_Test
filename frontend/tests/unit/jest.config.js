@@ -2,10 +2,11 @@ const { pathsToModuleNameMapper } = require("ts-jest/utils");
 const { compilerOptions }         = require("../../tsconfig");
 //-----------------------------------------------------------------------------
 module.exports = {
-    rootDir             : "../../",
-    name                : "unit",
-    displayName         : "unit tests",
-    preset              : "ts-jest",
+    rootDir        : "../../",
+    name           : "unit",
+    displayName    : "unit tests",
+    testEnvironment: "node",
+    preset         : "ts-jest",
     // The preset above is actually a shortcut for this:
     //moduleFileExtensions: ["js", "ts", "json"],
     //transform           : {

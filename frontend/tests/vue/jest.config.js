@@ -26,5 +26,6 @@ module.exports = {
         __RUN_FROM_TEST__: true,
         __VERSION__      : "42",
         __BASE_URL__     : "http://localhost/"
-    }
+    },
+    setupFilesAfterEnv: ["<rootDir>/tests/composition-api-setup.ts"]
 };

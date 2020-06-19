@@ -1,7 +1,11 @@
 import { IHttpClient, HttpClient } from "@svc/httpclient";
 import HelloResponse               from "./hello-response";
 //-----------------------------------------------------------------------------
-export default class GreetingService {
+export interface IGreetingService {
+    hello: (name: string) => Promise<string>;
+}
+//-----------------------------------------------------------------------------
+export default class GreetingService implements IGreetingService {
     private readonly _httpClient: IHttpClient;
     //-------------------------------------------------------------------------
     constructor(httpClient?: IHttpClient) {
