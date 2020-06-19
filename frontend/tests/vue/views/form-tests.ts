@@ -16,7 +16,7 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import MainView                           from "@view/main.vue";
+import FormView                           from "@view/form.vue";
 import GreetingService                    from "@store/user/greeting-service";
 import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import BootstrapVue                       from "bootstrap-vue";
@@ -30,13 +30,13 @@ beforeEach(() => {
 });
 //-----------------------------------------------------------------------------
 describe("Main.vue", () => {
-    let sut: Wrapper<MainView>;
+    let sut: Wrapper<FormView>;
     //-------------------------------------------------------------------------
     beforeEach(() => {
         const localVue = createLocalVue();
         localVue.use(BootstrapVue);
 
-        sut = mount(MainView, { localVue });
+        sut = mount(FormView, { localVue });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
