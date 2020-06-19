@@ -15,11 +15,11 @@
 
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
-    import { createUserStore } from "@store/user/user";
+    import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     const component = defineComponent({
         setup() {
-            const { name, message } = createUserStore();
+            const { name, message } = useUserStore();
 
             return {
                 name,

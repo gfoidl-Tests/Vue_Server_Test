@@ -38,7 +38,7 @@
 
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
-    import { createUserStore } from "@store/user/user";
+    import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     function throwError(): void {
         throw new Error("Test for unhandled error");
@@ -47,7 +47,7 @@
     const component = defineComponent({
         setup() {
             // Deconstruct for easier use in the view-model
-            const { name, message, hello, reset } = createUserStore();
+            const { name, message, hello, reset } = useUserStore();
 
             // Returns the "view model"
             // All the types returned could come from different places, and they

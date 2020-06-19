@@ -7,10 +7,10 @@
 import { ref, computed, provide, inject } from "@vue/composition-api";
 import GreetingService                    from "./greeting-service";
 //-----------------------------------------------------------------------------
-export function createUserStore() {
+export function createUserStore(greetingServiceInjected?: GreetingService) {
     const nameRef         = ref("");
     const messageRef      = ref("");
-    const greetingService = new GreetingService();
+    const greetingService = greetingServiceInjected ?? new GreetingService();
     //-------------------------------------------------------------------------
     const name = computed({
         get: ()  => nameRef.value,
@@ -30,21 +30,26 @@ export function createUserStore() {
         messageRef.value = "";
     }
     //-------------------------------------------------------------------------
-    return {
+    const store = {
         name,
         message,
         hello,
         reset
     };
+
+    return store;
 }
+//-----------------------------------------------------------------------------
+// Note: declare is optional
+declare type UserStore = ReturnType<typeof createUserStore>;
 //-----------------------------------------------------------------------------
 // Define a unique key
 const key = Symbol();
 //-----------------------------------------------------------------------------
-export function provideUserStore() {
-    provide(key, createUserStore());
+export function provideUserStore(greetingService?: GreetingService) {
+    provide(key, createUserStore(greetingService));
 }
 //-----------------------------------------------------------------------------
 export function useUserStore() {
-    return inject(key);
+    return inject(key) as UserStore;
 }

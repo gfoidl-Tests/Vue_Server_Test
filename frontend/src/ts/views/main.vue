@@ -7,7 +7,9 @@
 </template>
 
 <script lang="ts">
-    import setupBootstrap from "@/setup-bootstrap";
+    import setupBootstrap       from "@/setup-bootstrap";
+    import { defineComponent }  from "@vue/composition-api";
+    import { provideUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
     import FormView   from "./form.vue";
     import StatusView from "./status.vue";
@@ -20,10 +22,21 @@
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }
     //-------------------------------------------------------------------------
-    export default {
+    const component = defineComponent({
         components: {
             FormView,
             StatusView
+        },
+        setup() {
+            // This provides an instance of the user-store, which can be used
+            // by `useUserStore` and the state is shared.
+            // A different component could create a new store with different
+            // (new) state.
+            // That's the advantage of the provide-inject-pattern over
+            // "global" state in the store.
+            provideUserStore();
         }
-    };
+    });
+    //-------------------------------------------------------------------------
+    export default component;
 </script>
