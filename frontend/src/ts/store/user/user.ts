@@ -41,7 +41,7 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
 }
 //-----------------------------------------------------------------------------
 // Note: declare is optional
-declare type UserStore = ReturnType<typeof createUserStore>;
+export declare type UserStore = ReturnType<typeof createUserStore>;
 //-----------------------------------------------------------------------------
 // Define a unique key
 const key = Symbol();

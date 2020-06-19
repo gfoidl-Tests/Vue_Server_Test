@@ -9,19 +9,24 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import StatusView                         from "@view/status.vue";
-import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
-import BootstrapVue                       from "bootstrap-vue";
-import useUserStore                       from "@store/user/user";
+import StatusView                                    from "@view/status.vue";
+import { createLocalVue, Wrapper }                   from "@vue/test-utils";
+import { mountComposition }                          from "../mount-composition";
+import BootstrapVue                                  from "bootstrap-vue";
+import { provideUserStore, useUserStore, UserStore } from "@store/user/user";
 //-----------------------------------------------------------------------------
 describe("Status.vue", () => {
-    let sut: Wrapper<StatusView>;
+    let sut      : Wrapper<StatusView>;
+    let userStore: UserStore;
     //-------------------------------------------------------------------------
     beforeEach(() => {
         const localVue = createLocalVue();
         localVue.use(BootstrapVue);
 
-        sut = mount(StatusView, { localVue });
+        sut = mountComposition(StatusView, localVue, () => {
+            provideUserStore();
+            userStore = useUserStore();
+        });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
@@ -39,7 +44,7 @@ describe("Status.vue", () => {
     });
     //-------------------------------------------------------------------------
     test("name and message set in store --> fields updated", async () => {
-        const { name, hello } = useUserStore();
+        const { name, hello } = userStore;
 
         name.value = "batman";
         await hello();

@@ -13,8 +13,8 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import useUserStore    from "@store/user/user";
-import GreetingService from "@store/user/greeting-service";
+import { createUserStore } from "@store/user/user";
+import GreetingService     from "@store/user/greeting-service";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ beforeEach(() => {
 describe("UserStore", () => {
     describe("name", () => {
         test("set name", () => {
-            const { name } = useUserStore();
+            const { name } = createUserStore();
 
             name.value = "Himen";
             
@@ -36,40 +36,44 @@ describe("UserStore", () => {
     //-------------------------------------------------------------------------
     describe("hello", () => {
         test("name given --> correct message set", async () => {
-            const { name, hello, message } = useUserStore();
-            name.value = "batman";
+            const userStore = createUserStore();
+            userStore.name.value = "batman";
 
             mockHello.mockResolvedValue("Hi batman");
 
-            await hello();
+            await userStore.hello();
 
             expect(mockHello).toHaveBeenCalledWith("batman");
-            expect(message.value).toBe("Hi batman");
+            expect(userStore.message.value).toBe("Hi batman");
             expect.assertions(2);
         });
         //---------------------------------------------------------------------
         test("different name given --> message set", async () => {
-            const { name, hello, message } = useUserStore();
-            name.value = "clayman";
+            const userStore = createUserStore();
+            userStore.name.value = "clayman";
 
             mockHello.mockResolvedValue("Hi clayman");
 
-            await hello();
+            await userStore.hello();
 
             expect(mockHello).toHaveBeenCalledWith("clayman");
-            expect(message.value).toBe("Hi clayman");
+            expect(userStore.message.value).toBe("Hi clayman");
             expect.assertions(2);
         });
     });
     //-------------------------------------------------------------------------
     describe("reset", () => {
-        test("resets properties", () => {
-            const { reset, name, message } = useUserStore();
+        test("resets properties", async () => {
+            const userStore = createUserStore();
 
-            reset();
+            userStore.name.value = "himen";
+            await userStore.hello();
 
-            expect(name.value)   .toBe("");
-            expect(message.value).toBe("");
+            userStore.reset();
+
+            expect(userStore.name.value)   .toBe("");
+            expect(userStore.message.value).toBe("");
+            expect.assertions(2);
         });
     });
 });
