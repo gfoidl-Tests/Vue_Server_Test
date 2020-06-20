@@ -1,21 +1,24 @@
 <template>
     <div>
         <form-view></form-view>
-        <hr />
+        <hr v-show="isNameEntered" />
         <status-view></status-view>
-        <hr />
+        <hr v-show="isNameEntered" />
         <history-view></history-view>
+        <hr v-show="!isNameEntered" />
+        <version></version>
     </div>
 </template>
 
 <script lang="ts">
-    import setupBootstrap       from "@/setup-bootstrap";
-    import { defineComponent }  from "@vue/composition-api";
-    import { provideUserStore } from "@store/user/user";
+    import setupBootstrap                     from "@/setup-bootstrap";
+    import { defineComponent, computed }      from "@vue/composition-api";
+    import { provideUserStore, useUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
     import FormView    from "./form.vue";
     import StatusView  from "./status.vue";
     import HistoryView from "./history.vue";
+    import Version     from "@cmp/version.vue";
     //-------------------------------------------------------------------------
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
@@ -29,7 +32,8 @@
         components: {
             FormView,
             StatusView,
-            HistoryView
+            HistoryView,
+            Version
         },
         setup() {
             // This provides an instance of the user-store, which can be used
@@ -39,6 +43,14 @@
             // That's the advantage of the provide-inject-pattern over
             // "global" state in the store.
             provideUserStore();
+
+            // Use the provided store (instance) self
+            const { name }      = useUserStore();
+            const isNameEntered = computed(() => name.value.length > 0);
+
+            return {
+                isNameEntered
+            };
         }
     });
     //-------------------------------------------------------------------------

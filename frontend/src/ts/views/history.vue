@@ -11,8 +11,7 @@
                                   @click ="redoHistory(index)"
                                   variant="outline-primary"
                                   size   ="sm"
-                                  v-b-tooltip.hover
-                                  :title ="'Redo with name \'' + item.name + '\''">
+                                  v-b-tooltip.hover.html="redoTooltip(item)">
                             <b-icon-reply></b-icon-reply>
                         </b-button>
                         <b-button :id    ="'deleteButton_' + index"
@@ -39,8 +38,8 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent } from "@vue/composition-api";
-    import { useUserStore }    from "@store/user/user";
+    import { defineComponent }            from "@vue/composition-api";
+    import { useUserStore, HistoryEntry } from "@store/user/user";
     //-------------------------------------------------------------------------
     import { BIconReply, BIconTrash, BIcon } from "bootstrap-vue";
     //-------------------------------------------------------------------------
@@ -53,10 +52,15 @@
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();
 
+            function redoTooltip(item: HistoryEntry): string {
+                return `Redo with name <strong>${item.name}</strong>`;
+            }
+
             return {
                 history,
                 removeFromHistory,
-                redoHistory
+                redoHistory,
+                redoTooltip
             };
         }
     });
