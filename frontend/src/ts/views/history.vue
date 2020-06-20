@@ -1,12 +1,18 @@
 <template>
     <b-container>
         <b-row>
-            <b-col id="historyList" v-if="messageHistory.length > 0">
+            <b-col id="historyList" v-if="history.length > 0">
                 <h5>History of messages</h5>
 
                 <ul>
-                    <li v-for="(item, index) in messageHistory" :key="index" data-test="history">
-                        {{ item }}
+                    <li v-for="(item, index) in history" :key="index" data-test="history">
+                        {{ item.message }}
+                        <b-button :id    ="'redoButton_' + index"
+                                  @click ="redoHistory(index)"
+                                  variant="outline-primary"
+                                  size   ="sm">
+                            Redo
+                        </b-button>
                         <b-button :id    ="'deleteButton_' + index"
                                   @click ="removeFromHistory(index)"
                                   variant="outline-secondary"
@@ -32,11 +38,12 @@
     //-------------------------------------------------------------------------
     const component = defineComponent({
         setup() {
-            const { messageHistory, removeFromHistory } = useUserStore();
+            const { history, removeFromHistory, redoHistory } = useUserStore();
 
             return {
-                messageHistory,
-                removeFromHistory
+                history,
+                removeFromHistory,
+                redoHistory
             };
         }
     });
