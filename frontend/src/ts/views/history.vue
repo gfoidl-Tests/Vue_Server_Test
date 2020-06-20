@@ -10,14 +10,20 @@
                         <b-button :id    ="'redoButton_' + index"
                                   @click ="redoHistory(index)"
                                   variant="outline-primary"
-                                  size   ="sm">
-                            Redo
+                                  size   ="sm"
+                                  v-b-tooltip.hover
+                                  :title ="'Redo with name \'' + item.name + '\''">
+                            <b-icon-reply></b-icon-reply>
                         </b-button>
                         <b-button :id    ="'deleteButton_' + index"
                                   @click ="removeFromHistory(index)"
                                   variant="outline-secondary"
-                                  size   ="sm">
-                            Remove
+                                  size   ="sm"
+                                  v-b-tooltip.hover
+                                  title  ="Remove from history">
+                            <!--<b-icon-trash></b-icon-trash>-->
+                            <!-- This is an alternative to the above. Note: the componente must be imported! -->
+                            <b-icon icon="trash"></b-icon>
                         </b-button>
                     </li>
                 </ul>
@@ -36,7 +42,14 @@
     import { defineComponent } from "@vue/composition-api";
     import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
+    import { BIconReply, BIconTrash, BIcon } from "bootstrap-vue";
+    //-------------------------------------------------------------------------
     const component = defineComponent({
+        components: {
+            BIconReply,
+            BIconTrash,
+            BIcon
+        },
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();
 
