@@ -13,8 +13,8 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import { createUserStore } from "@store/user/user";
-import GreetingService     from "@store/user/greeting-service";
+import { createUserStore, HistoryEntry } from "@store/user/user";
+import GreetingService                   from "@store/user/greeting-service";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -101,6 +101,22 @@ describe("UserStore", () => {
             expect(userStore.name.value).toBe("himen");
             expect(userStore.history.value.length).toBe(2);
             expect.assertions(2);
+        });
+    });
+    //-------------------------------------------------------------------------
+    describe("addToHistory", () => {
+        test("entry given --> added to history", () => {
+            const userStore = createUserStore();
+
+            const entry: HistoryEntry = {
+                name   : "batman",
+                message: "hi"
+            };
+
+            userStore.addToHistory(entry);
+
+            expect(userStore.history.value.length).toBe(1);
+            expect(userStore.history.value[0]).toMatchObject(entry);
         });
     });
     //-------------------------------------------------------------------------

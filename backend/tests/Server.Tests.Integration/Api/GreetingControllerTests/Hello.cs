@@ -3,31 +3,14 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 using Server.Greeting;
 
-namespace Server.Tests.Integration.Api
+namespace Server.Tests.Integration.Api.GreetingControllerTests
 {
-    public class GreetingControllerTests : IntegrationTestBase
+    public class Hello : Base
     {
-        private HttpClient CreateHttpClient(Mock<IEventDispatcher> eventDispatcherMock)
-        {
-            return _factory.WithWebHostBuilder(builder =>
-            {
-                var loggerMock = new Mock<AbstractLogger<GreetingController>>();
-
-                builder.ConfigureTestServices(services =>
-                {
-                    services.AddScoped(_ => eventDispatcherMock.Object);
-                    services.AddScoped(_ => loggerMock.Object);
-                });
-            })
-            .CreateClient();
-        }
-        //---------------------------------------------------------------------
         [Test]
         public async Task Name_is_null___bad_request_response()
         {
@@ -62,15 +45,15 @@ namespace Server.Tests.Integration.Api
             HttpResponseMessage httpResponse = await client.GetAsync("/api/greeting/hello?name=tester");
 
             Assert.Multiple(async () =>
-           {
-               Assert.DoesNotThrow(() => httpResponse.EnsureSuccessStatusCode());
-               Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
-               StringAssert.StartsWith("application/json", httpResponse.Content.Headers.ContentType.ToString());
+            {
+                Assert.DoesNotThrow(() => httpResponse.EnsureSuccessStatusCode());
+                Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
+                StringAssert.StartsWith("application/json", httpResponse.Content.Headers.ContentType.ToString());
 
-               HelloResponse actual = await httpResponse.Content.ReadFromJsonAsync<HelloResponse>();
+                HelloResponse actual = await httpResponse.Content.ReadFromJsonAsync<HelloResponse>();
 
-               Assert.AreEqual(response.Message, actual.Message);
-           });
+                Assert.AreEqual(response.Message, actual.Message);
+            });
         }
     }
 }

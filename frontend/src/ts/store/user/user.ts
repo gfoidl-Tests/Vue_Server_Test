@@ -50,6 +50,10 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
         await hello();
     }
     //-------------------------------------------------------------------------
+    function addToHistory(historyEntry: HistoryEntry) {
+        historyRef.value.push(historyEntry);
+    }
+    //-------------------------------------------------------------------------
     function reset(): void {
         nameRef.value    = "";
         messageRef.value = "";
@@ -63,6 +67,7 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
         hello,
         removeFromHistory,
         redoHistory,
+        addToHistory,
         reset
     };
 }

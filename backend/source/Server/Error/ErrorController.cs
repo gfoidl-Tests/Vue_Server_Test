@@ -11,12 +11,11 @@ namespace Server.Error
         { }
         //---------------------------------------------------------------------
         [HttpGet("/error")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public IActionResult Error() => this.Problem();
         //---------------------------------------------------------------------
         [HttpPost("client")]
-        public Task ClientError(ClientErrorRequest request)
-        {
-            return _eventDispatcher.Handle(request);
-        }
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+        public Task ClientError(ClientErrorRequest request) => _eventDispatcher.Handle(request);
     }
 }

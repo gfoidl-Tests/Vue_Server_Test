@@ -5,6 +5,7 @@
             "@/*"     : [ "src/ts/*" ],
             "@cmp/*"  : [ "src/ts/components/*" ],
             "@ext/*"  : [ "src/ts/extensions/*" ],
+            "@hub/*"  : [ "src/ts/hubs/*" ],
             "@img/*"  : [ "src/images/*" ],
             "@store/*": [ "src/ts/store/*" ],
             "@svc/*"  : [ "src/ts/services/*" ],

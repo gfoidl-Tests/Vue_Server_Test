@@ -1,10 +1,10 @@
 import Vue from "vue";
 //-----------------------------------------------------------------------------
-interface ErrorData {
+export interface ErrorData {
     message: string;
     stack? : string;
     data   : unknown;
-    handler: "vue" | "window";
+    handler: "vue" | "window" | "signalR";
 }
 //-----------------------------------------------------------------------------
 // https://stackoverflow.com/a/42193905/347870
@@ -56,7 +56,7 @@ export default class Logger {
         }
     }
     //-------------------------------------------------------------------------
-    private static async logUnhandledException(error: ErrorData): Promise<void> {
+    public static async logUnhandledException(error: ErrorData): Promise<void> {
         console.error("Unhandled error", error);
 
         const HttpClient = (await import("./httpclient")).HttpClient;

@@ -11,9 +11,10 @@
 </template>
 
 <script lang="ts">
-    import setupBootstrap                     from "@/setup-bootstrap";
-    import { defineComponent, computed }      from "@vue/composition-api";
-    import { provideUserStore, useUserStore } from "@store/user/user";
+    import setupBootstrap                             from "@/setup-bootstrap";
+    import { defineComponent, computed, onUnmounted } from "@vue/composition-api";
+    import { provideUserStore, useUserStore }         from "@store/user/user";
+    import GreetingHub                                from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
     import FormView    from "./form.vue";
     import StatusView  from "./status.vue";
@@ -47,6 +48,14 @@
             // Use the provided store (instance) self
             const { name }      = useUserStore();
             const isNameEntered = computed(() => name.value.length > 0);
+
+            // Vue's inject is only allowed within an active component. So use
+            // ctor-injection here.
+            const greetingHub = new GreetingHub(useUserStore());
+
+            onUnmounted(() => {
+                greetingHub.disconnect();
+            });
 
             return {
                 isNameEntered

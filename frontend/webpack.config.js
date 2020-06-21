@@ -219,7 +219,12 @@ module.exports = (env, argv) => {
             proxy             : {
                 "/api": {
                     target: "https://localhost:44369",
-                    secure: false                       // for HTTPS with self-signed certificate    
+                    secure: false                       // for HTTPS with self-signed certificate
+                },
+                "/hubs": {
+                    target: "https://localhost:44369",
+                    secure: false,                      // for HTTPS with self-signed certificate
+                    ws    : true                        // for SignalR / Websockets
                 }
             }
         },

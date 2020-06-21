@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using Server.Hubs;
 
 namespace Server
 {
@@ -45,6 +46,8 @@ namespace Server
 
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddScoped<IEventDispatcher, MediatorDispatcher>();
+
+            services.AddSignalR();
         }
         //---------------------------------------------------------------------
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -99,6 +102,7 @@ namespace Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<GreetingHub>(GreetingHub.HubUrl);
                 endpoints.Map("/proc-info", HandleProcInfo);
 
                 // When there is no reverse proxy before kestrel, then this is the 
