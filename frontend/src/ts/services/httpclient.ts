@@ -31,7 +31,7 @@ export class HttpClient implements IHttpClient {
     private static get AxiosInstance(): AxiosInstance {
         if (HttpClient.s_axiosInstance === null) {
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug("HttpClient axios instance is null, creating it");
+                console.debug("[HttpClient] axios instance is null, creating it");
             }
 
             const baseURL = __BASE_URL__ + "api/";
@@ -45,7 +45,7 @@ export class HttpClient implements IHttpClient {
 
             console.assert(HttpClient.s_axiosInstance !== undefined, "HttpCllient axios instance not created");
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug("HttpClient axios instance created with baseURL", baseURL);
+                console.debug("[HttpClient] axios instance created with baseURL", baseURL);
             }
         }
 
@@ -55,14 +55,14 @@ export class HttpClient implements IHttpClient {
     public static get Default(): HttpClient {
         if (HttpClient.s_instance === null) {
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug("HttpClient instance is null, creating it with axios");
+                console.debug("[HttpClient] instance is null, creating it with axios");
             }
 
             HttpClient.s_instance = new HttpClient(HttpClient.AxiosInstance);
 
             console.assert(HttpClient.s_instance !== undefined, "HttpCllient instance not created");
             if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-                console.debug("HttpClient instance created");
+                console.debug("[HttpClient] instance created");
             }
         }
 
