@@ -4,10 +4,10 @@ import Logger, { ErrorData }                   from "@svc/logger";
 import { UserStore }                           from "@store/user/user";
 //-----------------------------------------------------------------------------
 export default class GreetingHub {
-    #connection: HubConnection;
+    private _connection: HubConnection;
     //-------------------------------------------------------------------------
     constructor(userStore: UserStore) {
-        this.#connection = new HubConnectionBuilder()
+        this._connection = new HubConnectionBuilder()
             .withUrl("/hubs/greeting")
             .withAutomaticReconnect()
             .build();
@@ -18,7 +18,7 @@ export default class GreetingHub {
     public async disconnect(): Promise<void> {
         try {
             console.debug("[GreetingHub] trying to disconnect");
-            await this.#connection.stop();
+            await this._connection.stop();
             console.info("[GreetingHub] disconnected");
         } catch (e) {
             GreetingHub.handleError(e as Error);
@@ -27,11 +27,11 @@ export default class GreetingHub {
     //-------------------------------------------------------------------------
     private async init(userStore: UserStore): Promise<void> {
         const greetingHandler = new GreetingHandler(userStore);
-        this.#connection.on("NewGreeting", (name: string, msg: string) => greetingHandler.onNewGreeting(name, msg));
+        this._connection.on("NewGreeting", (name: string, msg: string) => greetingHandler.onNewGreeting(name, msg));
 
         try {
             console.debug("[GreetingHub] trying to connect");
-            await this.#connection.start();
+            await this._connection.start();
             console.info("[GreetingHub] connected");
         } catch (e) {
             GreetingHub.handleError(e as Error);

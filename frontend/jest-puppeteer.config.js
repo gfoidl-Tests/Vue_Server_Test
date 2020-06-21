@@ -14,7 +14,8 @@ module.exports = {
     // https://github.com/smooth-code/jest-puppeteer/blob/master/packages/jest-environment-puppeteer/README.md#jest-puppeteerconfigjs
     browserContext: "incognito",
     server        : {
-        command : "yarn start-server",
+        //command : "yarn start-server",    // SignalR won't work here, as it's just static serving
+        command : "yarn dotnet-serve",
         port    : 8080,
         protocol: "http",
         debug   : false
