@@ -48,6 +48,7 @@ namespace Server
             services.AddScoped<IEventDispatcher, MediatorDispatcher>();
 
             services.AddSignalR();
+            services.AddHealthChecks();
         }
         //---------------------------------------------------------------------
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,6 +104,7 @@ namespace Server
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<GreetingHub>(GreetingHub.HubUrl);
+                endpoints.MapHealthChecks("/health");
                 endpoints.Map("/proc-info", HandleProcInfo);
 
                 // When there is no reverse proxy before kestrel, then this is the 

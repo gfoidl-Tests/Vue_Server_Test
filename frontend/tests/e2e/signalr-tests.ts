@@ -1,7 +1,11 @@
 import { Overrides }   from "puppeteer";
 import PuppeteerHelper from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
-describe("SignalR", () => {
+const conditionalDescribe = process.env.LOCAL_DEV
+    ? describe
+    : describe.skip;
+//-----------------------------------------------------------------------------
+conditionalDescribe("SignalR", () => {
     const baseUrl = "http://localhost:8080";
     //-------------------------------------------------------------------------
     beforeAll(async () => {
@@ -25,6 +29,7 @@ describe("SignalR", () => {
         await newPage.goto(baseUrl + "/api/greeting/hello-notify?name=batman");
         await newPage.close();
 
+        // TODO: test count
         const historyItems = await expect(page).toMatchElement("[data-test='history']");
 
         const name      = "hello-notify";
