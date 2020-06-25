@@ -1,13 +1,8 @@
-import { Overrides }   from "puppeteer";
-import PuppeteerHelper from "../puppeteer-helper";
+import { baseUrl, screenshotDir } from "./test-helper";
+import { Overrides }              from "puppeteer";
+import PuppeteerHelper            from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
-const conditionalDescribe = process.env.LOCAL_DEV
-    ? describe
-    : describe.skip;
-//-----------------------------------------------------------------------------
-conditionalDescribe("SignalR", () => {
-    const baseUrl = "http://localhost:8080";
-    //-------------------------------------------------------------------------
+describe("SignalR", () => {
     beforeAll(async () => {
         await page.goto(baseUrl);
     });
@@ -38,8 +33,7 @@ conditionalDescribe("SignalR", () => {
 
         expect(res).toBe("Hello 'batman' from SignalR");
 
-        const name      = "hello-notify";
-        const outputDir = "screenshots-e2e";
-        await PuppeteerHelper.takeScreenshot(`${name}.png`, outputDir);
+        const name = "hello-notify";
+        await PuppeteerHelper.takeScreenshot(`${name}.png`, screenshotDir);
     });
 });

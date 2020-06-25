@@ -11,3 +11,4 @@ log.json
 /frontend/junit.xml
 /frontend/screenshots*
 *.tsbuildinfo
+/web-app

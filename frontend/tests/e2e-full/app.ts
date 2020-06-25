@@ -1,31 +1,31 @@
-import PuppeteerHelper from "../puppeteer-helper";
+import { conditionalTest, baseUrl, screenshotDir } from "./test-helper";
+import PuppeteerHelper                             from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("App", () => {
-    const baseUrl = "http://localhost:5000";
-    //-------------------------------------------------------------------------
     beforeAll(async () => {
         await page.goto(baseUrl);
+    });
+    //-------------------------------------------------------------------------
+    conditionalTest("http to https redirection", async () => {
+        const url = process.env.HTTP_BASE_URL || "http://localhost:5000";
+
+        await page.goto(url);
+
+        expect(page.url()).toBe(`${baseUrl}/`);
     });
     //-------------------------------------------------------------------------
     test("page title is 'Vue Server Test'", async () => {
         await expect(page.title()).resolves.toMatch("Vue Server Test");
     });
     //-------------------------------------------------------------------------
-    test("screenshot -> matches snapshot", async () => {
-        const name       = "app-start";
-        const outputDir  = "screenshots-e2e-full";
-        const screenshot = await PuppeteerHelper.takeScreenshot(`${name}.png`, outputDir);
-        PuppeteerHelper.compareScreenshotToSnapshot(screenshot, name, outputDir);
-    });
-    //-------------------------------------------------------------------------
     test("check if Vue started by checking #sendButton", async () => {
         await expect(page).toMatchElement("#sendButton");
     });
     //-------------------------------------------------------------------------
-    test.skip("http to https redirection", async () => {
-        await page.goto("http://localhost:5000");
-
-        expect(page.url()).toBe("https://locahost:5001");
+    test("screenshot -> matches snapshot", async () => {
+        const name       = "app-start";
+        const screenshot = await PuppeteerHelper.takeScreenshot(`${name}.png`, screenshotDir);
+        PuppeteerHelper.compareScreenshotToSnapshot(screenshot, name, screenshotDir);
     });
     //-------------------------------------------------------------------------
     test("request to backend -> ok", async () => {

@@ -1,4 +1,3 @@
-
 const baseConfig = require("../../jest-puppeteer.config");
 //-----------------------------------------------------------------------------
 const config = {
@@ -10,6 +9,6 @@ const config = {
 };
 delete config.server;
 
-console.log("\njest-puppeteer.config", config);
+//console.log("\njest-puppeteer.config", config);
 
 module.exports = config;
