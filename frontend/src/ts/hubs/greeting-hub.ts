@@ -5,14 +5,21 @@ import Logger, { ErrorData }                   from "@svc/logger";
 import { UserStore }                           from "@store/user/user";
 //-----------------------------------------------------------------------------
 export default class GreetingHub {
-    private _connection: HubConnection | null;
+    private _connection: HubConnection;
+    private _userStore : UserStore;
     //-------------------------------------------------------------------------
-    constructor(userStore: UserStore) {
-        this._connection = null;
-        this.init(userStore);
+    constructor(userStore: UserStore, connection?: HubConnection, init = true) {
+        this._userStore = userStore;
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this._connection = connection ?? null!;
+
+        if (init) {
+            this.init();
+        }
     }
     //-------------------------------------------------------------------------
-    private async init(userStore: UserStore): Promise<void> {
+    private async init(): Promise<void> {
         const serverConnection = await isServerHealthy();
 
         if (!serverConnection) {
@@ -25,7 +32,7 @@ export default class GreetingHub {
             .withAutomaticReconnect()
             .build();
 
-        const greetingHandler = new GreetingHandler(userStore);
+        const greetingHandler = new GreetingHandler(this._userStore);
         this._connection.on("NewGreeting", (name: string, msg: string) => greetingHandler.onNewGreeting(name, msg));
 
         try {
@@ -35,6 +42,13 @@ export default class GreetingHub {
         } catch (e) {
             GreetingHub.handleError(e as Error);
         }
+    }
+    //-------------------------------------------------------------------------
+    public async redoHistory(index: number): Promise<void> {
+        if (index >= this._userStore.history.value.length) return;
+
+        const { name } = this._userStore.history.value[index];
+        await this._connection.send("SendGreeting", name, `Hello '${name}' (SignalR)`);
     }
     //-------------------------------------------------------------------------
     public async disconnect(): Promise<void> {

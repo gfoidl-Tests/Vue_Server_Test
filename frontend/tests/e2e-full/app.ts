@@ -2,7 +2,7 @@ import { conditionalTest, baseUrl, screenshotDir } from "./test-helper";
 import PuppeteerHelper                             from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("App", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await page.goto(baseUrl);
     });
     //-------------------------------------------------------------------------

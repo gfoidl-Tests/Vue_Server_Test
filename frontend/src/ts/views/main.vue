@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-    import setupBootstrap                             from "@/setup-bootstrap";
-    import { defineComponent, computed, onUnmounted } from "@vue/composition-api";
-    import { provideUserStore, useUserStore }         from "@store/user/user";
-    import GreetingHub                                from "@hub/greeting-hub";
+    import setupBootstrap                                      from "@/setup-bootstrap";
+    import { defineComponent, computed, onUnmounted, provide } from "@vue/composition-api";
+    import { provideUserStore, useUserStore }                  from "@store/user/user";
+    import GreetingHub                                         from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
     import FormView    from "./form.vue";
     import StatusView  from "./status.vue";
@@ -52,6 +52,13 @@
             // Vue's inject is only allowed within an active component. So use
             // ctor-injection here.
             const greetingHub = new GreetingHub(useUserStore());
+
+            // For me this is the most elegant approach. Other possibilities are:
+            //   * using 'props' to pass the greetingHub to the child
+            //   * using 'emit' in the child and handling the event here
+            // Both have the drawback of some overhead ceremony and it's not the
+            // responsibility to handle this here.
+            provide("greetingHub", greetingHub);
 
             onUnmounted(() => {
                 greetingHub.disconnect();

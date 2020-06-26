@@ -3,7 +3,7 @@ import { Overrides }              from "puppeteer";
 import PuppeteerHelper            from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("SignalR", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await page.goto(baseUrl);
     });
     //-------------------------------------------------------------------------
@@ -34,6 +34,25 @@ describe("SignalR", () => {
         expect(res).toBe("Hello 'batman' from SignalR");
 
         const name = "hello-notify";
+        await PuppeteerHelper.takeScreenshot(`${name}.png`, screenshotDir);
+    });
+    //-------------------------------------------------------------------------
+    test("redo history with SignalR --> history updated", async () => {
+        await expect(page).toFill("#nameInput", "himen");
+        await expect(page).toClick("#sendButton");
+        await expect(page).toMatchElement("#messageSpan", { visible: true });
+
+        await expect(page).toClick("#redoSignalRButton_0");
+        await expect(page).toMatchElement("#redoSignalRButton_1", { visible: true });
+
+        const res = await page.evaluate(() => {
+            const item = document.querySelectorAll("[data-test='history']").item(1) as HTMLElement;
+            return item.innerText.trim();
+        });
+
+        expect(res).toBe("Hello 'himen' (SignalR)");
+
+        const name = "redo-history";
         await PuppeteerHelper.takeScreenshot(`${name}.png`, screenshotDir);
     });
 });

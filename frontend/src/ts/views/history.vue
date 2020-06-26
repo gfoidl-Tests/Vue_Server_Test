@@ -14,6 +14,13 @@
                                   v-b-tooltip.hover.html="redoTooltip(item)">
                             <b-icon-reply></b-icon-reply>
                         </b-button>
+                        <b-button :id    ="'redoSignalRButton_' + index"
+                                  @click ="redoHistoryWithSignalR(index)"
+                                  variant="outline-primary"
+                                  size   ="sm"
+                                  v-b-tooltip.hover.html="redoSignalRTooltip(item)">
+                            <b-icon-reply-fill></b-icon-reply-fill>
+                        </b-button>
                         <b-button :id    ="'deleteButton_' + index"
                                   @click ="removeFromHistory(index)"
                                   variant="outline-secondary"
@@ -38,29 +45,42 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent }            from "@vue/composition-api";
+    import { defineComponent, inject }    from "@vue/composition-api";
     import { useUserStore, HistoryEntry } from "@store/user/user";
+    import GreetingHub                    from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
-    import { BIconReply, BIconTrash, BIcon } from "bootstrap-vue";
+    import { BIconReply, BIconTrash, BIconReplyFill, BIcon } from "bootstrap-vue";
     //-------------------------------------------------------------------------
     const component = defineComponent({
         components: {
             BIconReply,
             BIconTrash,
+            BIconReplyFill,
             BIcon
         },
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();
-
+            const greetingHub: GreetingHub | null             = inject<GreetingHub>("greetingHub", null! as GreetingHub);
+            //-----------------------------------------------------------------
             function redoTooltip(item: HistoryEntry): string {
                 return `Redo with name <strong>${item.name}</strong>`;
             }
-
+            //-----------------------------------------------------------------
+            function redoSignalRTooltip(item: HistoryEntry): string {
+                return `Redo with SignalR with name <strong>${item.name}</strong>`;
+            }
+            //-----------------------------------------------------------------
+            function redoHistoryWithSignalR(index: number) {
+                greetingHub?.redoHistory(index);
+            }
+            //-----------------------------------------------------------------
             return {
                 history,
                 removeFromHistory,
                 redoHistory,
-                redoTooltip
+                redoHistoryWithSignalR,
+                redoTooltip,
+                redoSignalRTooltip
             };
         }
     });
