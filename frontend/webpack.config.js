@@ -216,17 +216,19 @@ module.exports = (env, argv) => {
             watchContentBase  : true,
             historyApiFallback: true,
             // proxy doesn't work with Windows-Auth
-            proxy             : {
-                "/api": {
-                    target: "https://localhost:44369",
-                    secure: false                       // for HTTPS with self-signed certificate
-                },
-                "/hubs": {
-                    target: "https://localhost:44369",
-                    secure: false,                      // for HTTPS with self-signed certificate
-                    ws    : true                        // for SignalR / Websockets
-                }
-            }
+            // Below is the "short-form"
+            //proxy             : {
+            //    "/api": {
+            //        target: "https://localhost:44369",
+            //        secure: false                       // for HTTPS with self-signed certificate
+            //    }
+            //}
+            proxy: [{
+                context: ["/api", "/health", "/hubs"],
+                target : "https://localhost:44369",
+                secure : false,                         // for HTTPS with self-signed certificate
+                ws     : true                           // for SignalR / Websockets
+            }]
         },
         // Hack for "Can't resolve 'fs'" (from winston), cf. https://webpack.js.org/configuration/node/ and https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
         node: {
