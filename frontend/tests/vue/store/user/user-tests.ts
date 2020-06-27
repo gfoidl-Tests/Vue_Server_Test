@@ -13,8 +13,8 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import { createUserStore } from "@store/user/user";
-import GreetingService     from "@store/user/greeting-service";
+import { createUserStore, HistoryEntry } from "@store/user/user";
+import GreetingService                   from "@store/user/greeting-service";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ describe("UserStore", () => {
 
             expect(mockHello).toHaveBeenCalledWith("batman");
             expect(userStore.message.value).toBe("Hi batman");
-            expect(userStore.messageHistory.value[0]).toBe("Hi batman");
+            expect(userStore.history.value[0]).toMatchObject({ name: "batman", message: "Hi batman" });
             expect.assertions(3);
         });
         //---------------------------------------------------------------------
@@ -59,7 +59,7 @@ describe("UserStore", () => {
 
             expect(mockHello).toHaveBeenCalledWith("clayman");
             expect(userStore.message.value).toBe("Hi clayman");
-            expect(userStore.messageHistory.value[0]).toBe("Hi clayman");
+            expect(userStore.history.value[0]).toMatchObject({ name: "clayman", message: "Hi clayman" });
             expect.assertions(3);
         });
     });
@@ -79,7 +79,44 @@ describe("UserStore", () => {
 
             userStore.removeFromHistory(0);
 
-            expect(userStore.messageHistory.value.length).toBe(0);
+            expect(userStore.history.value.length).toBe(0);
+        });
+    });
+    //-------------------------------------------------------------------------
+    describe("redoHistory", () => {
+        test("empty history --> nothing happens", async () => {
+            const userStore = createUserStore();
+
+            await userStore.redoHistory(1);
+        });
+        //---------------------------------------------------------------------
+        test("filled history --> item replayed", async () => {
+            const userStore = createUserStore();
+
+            userStore.name.value = "himen";
+            await userStore.hello();
+            userStore.name.value = "";
+            await userStore.redoHistory(0);
+
+            expect(userStore.name.value).toBe("himen");
+            expect(userStore.history.value.length).toBe(2);
+            expect.assertions(2);
+        });
+    });
+    //-------------------------------------------------------------------------
+    describe("addToHistory", () => {
+        test("entry given --> added to history", () => {
+            const userStore = createUserStore();
+
+            const entry: HistoryEntry = {
+                name   : "batman",
+                message: "hi"
+            };
+
+            userStore.addToHistory(entry);
+
+            expect(userStore.history.value.length).toBe(1);
+            expect(userStore.history.value[0]).toMatchObject(entry);
         });
     });
     //-------------------------------------------------------------------------
@@ -94,7 +131,7 @@ describe("UserStore", () => {
 
             expect(userStore.name.value)   .toBe("");
             expect(userStore.message.value).toBe("");
-            expect(userStore.messageHistory.value.length).toBe(0);
+            expect(userStore.history.value.length).toBe(0);
             expect.assertions(3);
         });
     });

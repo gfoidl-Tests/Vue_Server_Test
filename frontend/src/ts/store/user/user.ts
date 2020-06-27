@@ -7,47 +7,67 @@
 import { ref, computed, provide, inject } from "@vue/composition-api";
 import GreetingService                    from "./greeting-service";
 //-----------------------------------------------------------------------------
+export interface HistoryEntry {
+    name   : string;
+    message: string;
+}
+//-----------------------------------------------------------------------------
 export function createUserStore(greetingServiceInjected?: GreetingService) {
-    const nameRef           = ref("");
-    const messageRef        = ref("");
-    const messageHistoryRef = ref(new Array<string>());
-    const greetingService   = greetingServiceInjected ?? new GreetingService();
+    const nameRef         = ref("");
+    const messageRef      = ref("");
+    const historyRef      = ref(new Array<HistoryEntry>());
+    const greetingService = greetingServiceInjected ?? new GreetingService();
     //-------------------------------------------------------------------------
     const name = computed({
         get: ()  => nameRef.value,
         set: val => nameRef.value = val
     });
 
-    const message        = computed(() => messageRef.value);
-    const messageHistory = computed(() => messageHistoryRef.value);
+    const message = computed(() => messageRef.value);
+    const history = computed(() => historyRef.value);
     //-------------------------------------------------------------------------
     async function hello(): Promise<void> {
         const message = await greetingService.hello(nameRef.value);
 
         messageRef.value = message;
-        messageHistoryRef.value.push(message);
+        historyRef.value.push({ name: nameRef.value, message });
 
         console.debug("message set to", messageRef.value);
     }
     //-------------------------------------------------------------------------
     function removeFromHistory(index: number): void {
-        const removed = messageHistoryRef.value.splice(index, 1);
+        const removed = historyRef.value.splice(index, 1);
 
-        console.debug("Removed item from history (index, message):", index, removed);
+        console.debug("Removed item from history (index, item):", index, removed);
+    }
+    //-------------------------------------------------------------------------
+    async function redoHistory(index: number): Promise<void> {
+        if (index >= history.value.length) return;
+
+        const { name } = history.value[index];
+        nameRef.value  = name;
+
+        await hello();
+    }
+    //-------------------------------------------------------------------------
+    function addToHistory(historyEntry: HistoryEntry) {
+        historyRef.value.push(historyEntry);
     }
     //-------------------------------------------------------------------------
     function reset(): void {
-        nameRef.value           = "";
-        messageRef.value        = "";
-        messageHistoryRef.value = [];
+        nameRef.value    = "";
+        messageRef.value = "";
+        historyRef.value = [];
     }
     //-------------------------------------------------------------------------
     return {
         name,
         message,
-        messageHistory,
+        history,
         hello,
         removeFromHistory,
+        redoHistory,
+        addToHistory,
         reset
     };
 }

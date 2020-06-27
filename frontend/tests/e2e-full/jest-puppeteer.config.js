@@ -20,6 +20,6 @@ const config = {
     }
 };
 
-console.log("\njest-puppeteer.config", config);
+//console.log("\njest-puppeteer.config", config);
 
 module.exports = config;

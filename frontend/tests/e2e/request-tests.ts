@@ -3,7 +3,7 @@ import HelloResponse from "@store/user/hello-response";
 describe("Requests", () => {
     const baseUrl = "http://localhost:8080";
     //-------------------------------------------------------------------------
-    beforeAll(async () => {
+    beforeEach(async () => {
         await page.goto(baseUrl);
     });
     //-------------------------------------------------------------------------

@@ -1,4 +1,8 @@
-module.exports = {
+const testTimeout = process.env.SERVER_TEST
+    ? 10000
+    : 3145;
+
+const config = {
     name                : "e2e-full",
     displayName         : "e2e-full tests",
     preset              : "jest-puppeteer",
@@ -12,5 +16,7 @@ module.exports = {
     modulePathIgnorePatterns: [
         "helper.ts"
     ],
-    testTimeout: 3145
+    testTimeout
 };
+
+module.exports = config;

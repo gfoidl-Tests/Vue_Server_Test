@@ -1,36 +1,33 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Server.Greeting;
 
 namespace Server.Tests.Greeting.GreetingControllerTests
 {
-    public class Hello : Base
+    public class HelloNotify : Base
     {
         [Test]
-        public async Task Name_given___200()
+        public async Task Name_given___202()
         {
             var eventMock = new Mock<IEventDispatcher>(MockBehavior.Strict);
             var sut       = new GreetingController(eventMock.Object, _loggerMock.Object);
-            var response  = new HelloResponse("test");
 
             eventMock
-                .Setup(e => e.Get(It.IsAny<HelloQuery>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(response))
+                .Setup(e => e.Publish(It.IsAny<HelloQuery>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            ActionResult<HelloResponse> result = await sut.Hello("name");
+            ActionResult result = await sut.HelloNotify("name");
 
             eventMock.Verify();
             Assert.Multiple(() =>
             {
-                Assert.IsInstanceOf<OkObjectResult>(result.Result);
-
-                OkObjectResult actual = result.Result as OkObjectResult;
-                Assert.AreSame(response, actual.Value);
+                Assert.IsInstanceOf<StatusCodeResult>(result);
+                StatusCodeResult statusCodeResult = result as StatusCodeResult;
+                Assert.AreEqual(202, statusCodeResult.StatusCode);
             });
         }
         //---------------------------------------------------------------------

@@ -36,5 +36,22 @@ namespace Server.Greeting
                 return this.BadRequest(e.Message);
             }
         }
+        //---------------------------------------------------------------------
+        [HttpPost("hello-notify")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> HelloNotify(string? name, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var query = new HelloQuery(name);
+                await _eventDispatcher.Publish(query, cancellationToken);
+                return this.StatusCode(StatusCodes.Status202Accepted);
+            }
+            catch (ArgumentNullException e)
+            {
+                return this.BadRequest(e.Message);
+            }
+        }
     }
 }

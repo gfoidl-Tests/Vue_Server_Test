@@ -11,6 +11,7 @@
         "build-release": "webpack --mode=production",
         "start"        : "webpack-dev-server --open chrome --hotOnly",
         "start-server" : "serve ../backend/source/Server/wwwroot --no-clipboard --listen 8080",
+        "dotnet-serve" : "cd ../backend/source/Server && dotnet run --urls http://localhost:8080",
         "test"         : "jest",
         "test-unit"    : "jest --projects tests/unit --verbose",
         "test-vue"     : "jest --projects tests/vue --verbose",
@@ -20,7 +21,9 @@
     "dependencies": {
         "axios"               : "^0.19.2",
         "bootstrap"           : "^4.4.1",
+        "bootstrap-icons"     : "1.0.0-alpha4",
         "bootstrap-vue"       : "^2.13.0",
+        "@microsoft/signalr"  : "^5.0.0-preview.5.20279.2",
         "vue"                 : "^2.6.11",
         "@vue/composition-api": "^0.6.4"
     },
