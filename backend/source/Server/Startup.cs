@@ -68,8 +68,10 @@ namespace Server
             {
                 options.GetLevel = (httpContext, elapsed, ex) =>
                 {
-                    if (ex != null)      return LogEventLevel.Error;
-                    if (elapsed > 1_000) return LogEventLevel.Warning;
+                    bool isSignalR = httpContext.WebSockets.IsWebSocketRequest;
+
+                    if (ex != null)                    return LogEventLevel.Error;
+                    if (elapsed > 1_000 && !isSignalR) return LogEventLevel.Warning;
                     return LogEventLevel.Debug;
                 };
 
