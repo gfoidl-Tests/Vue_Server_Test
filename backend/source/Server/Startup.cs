@@ -83,7 +83,22 @@ namespace Server
                 };
             });
 
-            app.UseStaticFiles();
+            var defaultFileOptions = new DefaultFilesOptions();
+            defaultFileOptions.DefaultFileNames.Clear();
+            defaultFileOptions.DefaultFileNames.Add("index.html");
+
+            app.UseDefaultFiles(defaultFileOptions);
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = context =>
+                {
+                    if (context.File.Name == "index.html")
+                    {
+                        context.Context.Response.Headers.Add("Cache-Control", "no-cache, no-store");
+                        context.Context.Response.Headers.Add("Expires", "-1");
+                    }
+                }
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
