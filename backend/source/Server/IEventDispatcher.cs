@@ -12,7 +12,7 @@ namespace Server
     { }
     //-------------------------------------------------------------------------
     public interface ICommandHandler<in TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
-        where TRequest : IQuery<TResponse>
+        where TRequest : ICommand<TResponse>
     { }
     //-------------------------------------------------------------------------
     public interface IEventDispatcher
