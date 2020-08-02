@@ -14,7 +14,7 @@
 <script lang="ts">
     import { defineComponent } from "@vue/composition-api";
     //-------------------------------------------------------------------------
-    const componenet = defineComponent({
+    export default defineComponent({
         setup() {
             const version = __VERSION__;
             const year    = new Date().getFullYear();
@@ -25,6 +25,4 @@
             };
         }
     });
-    //-------------------------------------------------------------------------
-    export default componenet;
 </script>

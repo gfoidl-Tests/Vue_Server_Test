@@ -23,7 +23,7 @@
     import { defineComponent } from "@vue/composition-api";
     import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
-    const component = defineComponent({
+    export default defineComponent({
         setup() {
             const { name, message } = useUserStore();
 
@@ -33,6 +33,4 @@
             };
         }
     });
-    //-------------------------------------------------------------------------
-    export default component;
 </script>

@@ -29,7 +29,7 @@
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }
     //-------------------------------------------------------------------------
-    const component = defineComponent({
+    export default defineComponent({
         components: {
             FormView,
             StatusView,
@@ -69,6 +69,4 @@
             };
         }
     });
-    //-------------------------------------------------------------------------
-    export default component;
 </script>

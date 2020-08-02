@@ -44,7 +44,7 @@
         throw new Error("Test for unhandled error");
     }
     //-------------------------------------------------------------------------
-    const component = defineComponent({
+    export default defineComponent({
         setup() {
             // Deconstruct for easier use in the view-model
             const { name, message, hello, reset } = useUserStore();
@@ -63,6 +63,4 @@
             };
         }
     });
-    //-------------------------------------------------------------------------
-    export default component;
 </script>
