@@ -51,7 +51,7 @@
     //-------------------------------------------------------------------------
     import { BIconReply, BIconTrash, BIconReplyFill, BIcon } from "bootstrap-vue";
     //-------------------------------------------------------------------------
-    const component = defineComponent({
+    export default defineComponent({
         components: {
             BIconReply,
             BIconTrash,
@@ -84,6 +84,4 @@
             };
         }
     });
-    //-------------------------------------------------------------------------
-    export default component;
 </script>
