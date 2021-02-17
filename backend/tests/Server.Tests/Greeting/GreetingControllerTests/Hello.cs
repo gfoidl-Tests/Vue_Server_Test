@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 
 namespace Server.Tests.Greeting.GreetingControllerTests
 {

@@ -1,9 +1,9 @@
 using System;
 using MediatR;
 
-namespace Server.Greeting
+namespace Server.Api.Greeting
 {
-    public readonly struct HelloQuery : IQuery<HelloResponse>, INotification
+    public class HelloQuery : IQuery<HelloResponse>, INotification
     {
         public string Name { get; }
         //---------------------------------------------------------------------

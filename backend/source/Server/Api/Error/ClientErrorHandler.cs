@@ -4,9 +4,16 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Server.Error
+namespace Server.Api.Error
 {
-    public class ClientErrorHandler : IRequestHandler<ClientErrorRequest>
+    public record ClientErrorCommand(
+        string Message,
+        string? Stack,
+        object? Data,
+        string Handler)
+        : ICommand<Unit>;
+    //---------------------------------------------------------------------
+    public class ClientErrorHandler : ICommandHandler<ClientErrorCommand, Unit>
     {
         private readonly ILogger _logger;
         //---------------------------------------------------------------------
@@ -15,9 +22,9 @@ namespace Server.Error
             _logger = logger;
         }
         //---------------------------------------------------------------------
-        public Task<Unit> Handle(ClientErrorRequest request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(ClientErrorCommand clientErrorCommand, CancellationToken cancellationToken)
         {
-            string json = JsonSerializer.Serialize(request, new JsonSerializerOptions
+            string json = JsonSerializer.Serialize(clientErrorCommand, new JsonSerializerOptions
             {
 #if DEBUG
                 WriteIndented = true

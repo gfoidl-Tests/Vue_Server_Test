@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Server.Hubs;
 
-namespace Server.Greeting
+namespace Server.Api.Greeting
 {
     public class HelloNotificationHandler : INotificationHandler<HelloQuery>
     {

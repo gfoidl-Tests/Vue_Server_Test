@@ -22,7 +22,7 @@ namespace Server.Hubs
             await base.OnConnectedAsync();
         }
         //---------------------------------------------------------------------
-        public override async Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
             _logger.LogInformation("Client {Client} disconnected", this.Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);

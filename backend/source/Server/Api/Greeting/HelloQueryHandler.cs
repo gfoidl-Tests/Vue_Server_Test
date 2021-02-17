@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Server.Greeting
+namespace Server.Api.Greeting
 {
     public sealed class HelloQueryHandler : IQueryHandler<HelloQuery, HelloResponse>
     {
