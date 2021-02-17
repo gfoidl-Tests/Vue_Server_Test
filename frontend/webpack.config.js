@@ -9,7 +9,7 @@ const PreloadWebpackPlugin       = require("preload-webpack-plugin");
 const svgToMiniDataUri           = require("mini-svg-data-uri");
 const TerserPlugin               = require("terser-webpack-plugin");
 const TsconfigPathsPlugin        = require("tsconfig-paths-webpack-plugin");
-const VueLoaderPlugin            = require("vue-loader/lib/plugin");
+const { VueLoaderPlugin }        = require("vue-loader");
 const Webpack                    = require("webpack");
 
 // https://github.com/webpack-contrib/webpack-bundle-analyzer
@@ -30,7 +30,7 @@ module.exports = (env, argv) => {
     const imgBaseOptions = {
         esModule  : false,                              // https://github.com/vuejs/vue-loader/issues/1612
         limit     : 8192,                               // bytes
-        name      : devMode ? "[name].[ext]" : "[name].[hash:8].[ext]",
+        name      : devMode ? "[name].[ext]" : "[name].[contenthash:8].[ext]",
         outputPath: "images"
     };
 
@@ -103,7 +103,6 @@ module.exports = (env, argv) => {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
                                 esModule  : true,       // enables e.g. tree-shaking
-                                hmr       : devMode,
                                 publicPath: "./"        // CSS-path are relative to the CSS-file location
                             }
                         },
