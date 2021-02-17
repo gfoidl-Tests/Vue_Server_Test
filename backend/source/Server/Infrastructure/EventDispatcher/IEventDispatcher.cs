@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Server
 {
-    public interface IQuery<out TResponse> : IRequest<TResponse> { }
+    public interface IQuery  <out TResponse> : IRequest<TResponse> { }
     public interface ICommand<out TResponse> : IRequest<TResponse> { }
     //-------------------------------------------------------------------------
     public interface IQueryHandler<in TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
