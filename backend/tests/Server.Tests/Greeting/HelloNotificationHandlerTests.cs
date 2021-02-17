@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 using Server.Hubs;
 
 namespace Server.Tests.Greeting

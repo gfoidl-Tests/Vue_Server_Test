@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{E6B7EF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2A7AAE4E-C46E-4B76-B40C-628860BC9E0D}"
 	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
 		tests\Directory.Build.props = tests\Directory.Build.props
 	EndProjectSection
 EndProject
@@ -19,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "source\Server\Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "tests\Server.Tests\Server.Tests.csproj", "{C13E505D-A654-427B-81B6-2310D92C875D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Tests.Integration", "tests\Server.Tests.Integration\Server.Tests.Integration.csproj", "{940C3542-6408-4840-AD3B-7678DF7A3869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests.Integration", "tests\Server.Tests.Integration\Server.Tests.Integration.csproj", "{940C3542-6408-4840-AD3B-7678DF7A3869}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{ED87CA08-ADA9-476D-BF3F-8871CF676144}"
 	ProjectSection(SolutionItems) = preProject

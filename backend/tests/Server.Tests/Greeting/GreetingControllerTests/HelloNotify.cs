@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 
 namespace Server.Tests.Greeting.GreetingControllerTests
 {

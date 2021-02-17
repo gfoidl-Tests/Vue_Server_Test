@@ -1,6 +1,6 @@
 using System;
 
-namespace Server.Greeting
+namespace Server.Api.Greeting
 {
     // To make this a struct doesn't bear an advantage, as MVC's return needs an
     // object, so it would get boxed.

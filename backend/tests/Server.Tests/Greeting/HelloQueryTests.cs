@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 
 namespace Server.Tests.Greeting
 {

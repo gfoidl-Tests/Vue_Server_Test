@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Server.Error
+namespace Server.Api.Error
 {
     public class ErrorController : ApiController
     {
@@ -16,6 +16,6 @@ namespace Server.Error
         //---------------------------------------------------------------------
         [HttpPost("client")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public Task ClientError(ClientErrorRequest request) => _eventDispatcher.Handle(request);
+        public Task ClientError(ClientErrorCommand clientErrorCommand) => _eventDispatcher.Send(clientErrorCommand);
     }
 }

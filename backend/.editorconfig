@@ -217,3 +217,6 @@ dotnet_naming_style.instance_field.required_prefix = _
 dotnet_naming_style.instance_field.required_suffix =
 dotnet_naming_style.instance_field.word_separator =
 dotnet_naming_style.instance_field.capitalization = camel_case
+
+# RCS1090: Add call to 'ConfigureAwait' (or vice versa).
+dotnet_diagnostic.RCS1090.severity = none

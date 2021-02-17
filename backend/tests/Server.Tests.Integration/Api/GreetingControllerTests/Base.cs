@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 
 namespace Server.Tests.Integration.Api.GreetingControllerTests
 {

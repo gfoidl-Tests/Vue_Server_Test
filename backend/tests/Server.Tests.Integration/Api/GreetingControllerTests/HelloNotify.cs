@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Server.Greeting;
+using Server.Api.Greeting;
 
 namespace Server.Tests.Integration.Api.GreetingControllerTests
 {

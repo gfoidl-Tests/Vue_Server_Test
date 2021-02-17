@@ -46,6 +46,7 @@ namespace Server
 
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddScoped<IEventDispatcher, MediatorDispatcher>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MediatRBehavior<,>));
 
             services.AddSignalR();
             services.AddHealthChecks();
