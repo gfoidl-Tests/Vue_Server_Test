@@ -6,5 +6,6 @@ module.exports = {
         "<rootDir>/tests/unit",
         "<rootDir>/tests/vue"
     ],
-    coverageReporters: ["text", "cobertura", "html"]    // https://github.com/istanbuljs/istanbuljs/tree/master/packages/istanbul-reports/lib
+    moduleFileExtensions: ["ts", "js", "json", "node"],
+    coverageReporters   : ["text", "cobertura", "html"]     // https://github.com/istanbuljs/istanbuljs/tree/master/packages/istanbul-reports/lib
 };
