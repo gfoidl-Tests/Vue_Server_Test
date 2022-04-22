@@ -4,8 +4,8 @@
 // of modules (i.e. files), so a class would be pure overhead by adding an
 // artificial layer.
 //-----------------------------------------------------------------------------
-import { ref, computed, provide, inject } from "@vue/composition-api";
-import GreetingService                    from "./greeting-service";
+import { ref, computed, provide, inject, InjectionKey, getCurrentInstance } from "vue";
+import GreetingService                                                      from "./greeting-service";
 //-----------------------------------------------------------------------------
 export interface HistoryEntry {
     name   : string;
@@ -76,10 +76,20 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
 export declare type UserStore = ReturnType<typeof createUserStore>;
 //-----------------------------------------------------------------------------
 // Define a unique key
-const key = Symbol();
+const key: InjectionKey<UserStore> = Symbol();
 //-----------------------------------------------------------------------------
 export function provideUserStore(greetingService?: GreetingService) {
-    provide(key, createUserStore(greetingService));
+    const userStore = createUserStore(greetingService);
+
+    // This worked with Vue 2's composition api.
+    // provide(key, userStore);
+
+    // But that changed in Vue 3, as now
+    // "Vue will walk up the parent chain to locate a provided value with a matching key"
+    // so we need to provide it in the app root or any other parent.
+
+    const app = getCurrentInstance()?.appContext.app;
+    app?.provide(key, userStore);
 }
 //-----------------------------------------------------------------------------
 export function useUserStore() {

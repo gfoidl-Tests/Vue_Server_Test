@@ -1,13 +1,13 @@
-import Vue            from "vue";
-import CompositionApi from "@vue/composition-api"
-import App            from "@/app.vue";
-import Logger         from "@svc/logger";
+import { createApp } from "vue";
+import App           from "@/app.vue";
+import Logger        from "@svc/logger";
 //-----------------------------------------------------------------------------
-Vue.config.productionTip = false;
-Vue.use(CompositionApi);
-Logger.init();
+if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
+    console.debug("App starting...");
+}
+
+const app = createApp(App);
+Logger.init(app);
+app.mount("#app");
 //-----------------------------------------------------------------------------
-const app = new Vue({
-    el    : "app",
-    render: r => r(App)
-});
+export { app };

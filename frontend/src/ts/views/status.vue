@@ -19,18 +19,8 @@
     }
 </style>
 
-<script lang="ts">
-    import { defineComponent } from "@vue/composition-api";
-    import { useUserStore }    from "@store/user/user";
+<script lang="ts" setup>
+    import { useUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
-    export default defineComponent({
-        setup() {
-            const { name, message } = useUserStore();
-
-            return {
-                name,
-                message
-            };
-        }
-    });
+    const { name, message } = useUserStore();
 </script>

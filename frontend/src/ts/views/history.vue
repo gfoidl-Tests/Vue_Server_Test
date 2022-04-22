@@ -27,9 +27,7 @@
                                   size   ="sm"
                                   v-b-tooltip.hover
                                   title  ="Remove from history">
-                            <!--<b-icon-trash></b-icon-trash>-->
-                            <!-- This is an alternative to the above. Note: the componente must be imported! -->
-                            <b-icon icon="trash"></b-icon>
+                            <b-icon-trash></b-icon-trash>
                         </b-button>
                     </li>
                 </ul>
@@ -45,18 +43,17 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent, inject }    from "@vue/composition-api";
+    import { defineComponent, inject }    from "vue";
     import { useUserStore, HistoryEntry } from "@store/user/user";
     import GreetingHub                    from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
-    import { BIconReply, BIconTrash, BIconReplyFill, BIcon } from "bootstrap-vue";
+    import { BIconReply, BIconTrash, BIconReplyFill } from "bootstrap-icons-vue";
     //-------------------------------------------------------------------------
     export default defineComponent({
         components: {
             BIconReply,
             BIconTrash,
-            BIconReplyFill,
-            BIcon
+            BIconReplyFill
         },
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();

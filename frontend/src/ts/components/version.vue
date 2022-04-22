@@ -11,8 +11,9 @@
     }
 </style>
 
-<script lang="ts">
-    import { defineComponent } from "@vue/composition-api";
+<!-- Classic Composition API way -->
+<!-- <script lang="ts">
+    import { defineComponent } from "vue";
     //-------------------------------------------------------------------------
     export default defineComponent({
         setup() {
@@ -25,4 +26,10 @@
             };
         }
     });
+</script> -->
+
+<!-- New Composition API way: all top-level bindings are usable in the template -->
+<script lang="ts" setup>
+    const version = __VERSION__;
+    const year    = new Date().getFullYear();
 </script>

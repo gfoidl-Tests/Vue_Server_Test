@@ -12,7 +12,7 @@
 
 <script lang="ts">
     import setupBootstrap                                      from "@/setup-bootstrap";
-    import { defineComponent, computed, onUnmounted, provide } from "@vue/composition-api";
+    import { defineComponent, computed, onUnmounted, provide } from "vue";
     import { provideUserStore, useUserStore }                  from "@store/user/user";
     import GreetingHub                                         from "@hub/greeting-hub";
     //-------------------------------------------------------------------------

@@ -37,7 +37,7 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent } from "@vue/composition-api";
+    import { defineComponent } from "vue";
     import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     function throwError(): void {
