@@ -60,7 +60,7 @@ namespace Server
                 if (s_simulateThreadPoolLoad)
                 {
                     await Task.Delay(250);
-                    state.Logger.LogTrace("PublishFireAndForget: simulated load on thread pool");
+                    state.Logger!.LogTrace("PublishFireAndForget: simulated load on thread pool");
                 }
 
                 Debug.Assert(state.ServiceScopeFactory is not null);

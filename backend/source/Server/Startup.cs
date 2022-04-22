@@ -84,7 +84,7 @@ namespace Server
                 };
             });
 
-            var defaultFileOptions = new DefaultFilesOptions();
+            DefaultFilesOptions defaultFileOptions = new();
             defaultFileOptions.DefaultFileNames.Clear();
             defaultFileOptions.DefaultFileNames.Add("index.html");
 
