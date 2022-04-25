@@ -53,21 +53,9 @@
     import { useUserStore, HistoryEntry } from "@store/user/user";
     import GreetingHub                    from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
-    import { CContainer, CRow, CCol, CButton, vctooltip } from "@coreui/vue";
-    import { CIcon }                                      from "@coreui/icons-vue";
-    import { cilActionRedo, cilActionUndo, cilTrash }     from "@coreui/icons";
+    import { cilActionRedo, cilActionUndo, cilTrash } from "@coreui/icons";
     //-------------------------------------------------------------------------
     export default defineComponent({
-        components: {
-            CContainer,
-            CRow,
-            CCol,
-            CButton,
-            CIcon
-        },
-        directives: {
-            "c-tooltip": vctooltip
-        },
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();
             const greetingHub: GreetingHub | null             = inject<GreetingHub>("greetingHub", null! as GreetingHub);

@@ -20,8 +20,7 @@
 </style>
 
 <script lang="ts" setup>
-    import { useUserStore }           from "@store/user/user";
-    import { CContainer, CRow, CCol } from "@coreui/vue";
+    import { useUserStore } from "@store/user/user";
     //-------------------------------------------------------------------------
     const { name, message } = useUserStore();
 </script>

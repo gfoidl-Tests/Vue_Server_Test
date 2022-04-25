@@ -41,22 +41,11 @@
     import { defineComponent } from "vue";
     import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
-    import { CContainer, CRow, CCol, CForm, CFormLabel, CFormInput, CButton } from "@coreui/vue";
-    //-------------------------------------------------------------------------
     function throwError(): void {
         throw new Error("Test for unhandled error");
     }
     //-------------------------------------------------------------------------
     export default defineComponent({
-        components: {
-            CContainer,
-            CRow,
-            CCol,
-            CForm,
-            CFormLabel,
-            CFormInput,
-            CButton
-        },
         setup() {
             // Deconstruct for easier use in the view-model
             const { name, message, hello, reset } = useUserStore();
