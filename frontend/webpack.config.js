@@ -43,7 +43,7 @@ module.exports = (env, argv) => {
                 // Note2: runtime only can be used when there are no template-strings used -- see app.ts for more info
                 //vue$  : "vue/dist/vue.esm.js"         // https://forum.vuejs.org/t/vue-2-0-warn-you-are-using-the-runtime-only-build-of-vue-where-the-template-compiler-is-not-available/9429/3
             //},
-            plugins: [ new TsconfigPathsPlugin({ configFile: tsConfigFile })]
+            plugins: [new TsconfigPathsPlugin({ configFile: tsConfigFile })]
         },
         output: {
             path    : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot"),
