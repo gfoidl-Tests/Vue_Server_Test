@@ -19,7 +19,7 @@ import {
 
 import {
     vctooltip
-} from "@coreui/vue";
+} from "./patches/coreui-tooltip";
 
 import { CIcon } from "@coreui/icons-vue";
 import {
