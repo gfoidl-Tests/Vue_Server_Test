@@ -13,7 +13,7 @@
                                   variant="outline"
                                   size   ="sm"
                                   v-c-tooltip="redoTooltip(item)">
-                            <c-icon :icon="cilActionRedo"></c-icon>
+                            <c-icon icon="cilActionRedo"></c-icon>
                         </c-button>
                         <c-button :id    ="'redoSignalRButton_' + index"
                                   @click ="redoHistoryWithSignalR(index)"
@@ -21,7 +21,7 @@
                                   variant="outline"
                                   size   ="sm"
                                   v-c-tooltip="redoSignalRTooltip(item)">
-                            <c-icon :icon="cilActionUndo"></c-icon>
+                            <c-icon icon="cilActionUndo"></c-icon>
                         </c-button>
                         <c-button :id    ="'deleteButton_' + index"
                                   @click ="removeFromHistory(index)"
@@ -29,7 +29,7 @@
                                   variant="outline"
                                   size   ="sm"
                                   v-c-tooltip="'Remove from history'">
-                            <c-icon :icon="cilTrash"></c-icon>
+                            <c-icon icon="cilTrash"></c-icon>
                         </c-button>
                     </li>
                 </ul>
@@ -52,8 +52,6 @@
     import { defineComponent, inject }    from "vue";
     import { useUserStore, HistoryEntry } from "@store/user/user";
     import GreetingHub                    from "@hub/greeting-hub";
-    //-------------------------------------------------------------------------
-    import { cilActionRedo, cilActionUndo, cilTrash } from "@coreui/icons";
     //-------------------------------------------------------------------------
     export default defineComponent({
         setup() {
@@ -78,10 +76,7 @@
                 redoHistory,
                 redoHistoryWithSignalR,
                 redoTooltip,
-                redoSignalRTooltip,
-                cilActionRedo,
-                cilActionUndo,
-                cilTrash
+                redoSignalRTooltip
             };
         }
     });

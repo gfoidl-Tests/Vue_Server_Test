@@ -22,6 +22,21 @@ import {
 } from "@coreui/vue";
 
 import { CIcon } from "@coreui/icons-vue";
+import {
+    cilActionRedo,
+    cilActionUndo,
+    cilTrash
+} from "@coreui/icons";
+//-----------------------------------------------------------------------------
+function registerIcons(): void {
+    const icons = {
+        cilActionRedo,
+        cilActionUndo,
+        cilTrash
+    };
+
+    app.provide("icons", icons);
+}
 //-----------------------------------------------------------------------------
 export default function setupCoreUI(): void {
     app.component(CContainer.name, CContainer);
@@ -34,6 +49,8 @@ export default function setupCoreUI(): void {
     app.component(CIcon.name     , CIcon);
 
     app.directive("c-tooltip", vctooltip);
+
+    registerIcons();
 
     console.debug("[CoreUI] registered components, directives");
 }
