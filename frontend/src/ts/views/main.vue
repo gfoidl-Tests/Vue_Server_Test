@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+    import { app }                                             from "@/app";
     import setupCoreUI                                         from "@/setup-coreui";
     import { defineComponent, computed, onUnmounted, provide } from "vue";
     import { provideUserStore, useUserStore }                  from "@store/user/user";
@@ -22,7 +23,7 @@
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
     if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-        setupCoreUI();
+        setupCoreUI(app);
     } else {
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }

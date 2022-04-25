@@ -4,8 +4,8 @@
 // of modules (i.e. files), so a class would be pure overhead by adding an
 // artificial layer.
 //-----------------------------------------------------------------------------
-import { ref, computed, provide, inject, InjectionKey, getCurrentInstance } from "vue";
-import GreetingService                                                      from "./greeting-service";
+import { ref, computed, inject, InjectionKey, getCurrentInstance } from "vue";
+import GreetingService                                             from "./greeting-service";
 //-----------------------------------------------------------------------------
 export interface HistoryEntry {
     name   : string;
@@ -75,10 +75,10 @@ export function createUserStore(greetingServiceInjected?: GreetingService) {
 // Note: declare is optional
 export declare type UserStore = ReturnType<typeof createUserStore>;
 //-----------------------------------------------------------------------------
-// Define a unique key
-const key: InjectionKey<UserStore> = Symbol();
+// Define a unique key, the 'description' isn't needed, but nice.
+export const userStoreKey: InjectionKey<UserStore> = Symbol("UserStore");
 //-----------------------------------------------------------------------------
-export function provideUserStore(greetingService?: GreetingService) {
+export function provideUserStore(greetingService?: GreetingService): void {
     const userStore = createUserStore(greetingService);
 
     // This worked with Vue 2's composition api.
@@ -89,9 +89,9 @@ export function provideUserStore(greetingService?: GreetingService) {
     // so we need to provide it in the app root or any other parent.
 
     const app = getCurrentInstance()?.appContext.app;
-    app?.provide(key, userStore);
+    app?.provide(userStoreKey, userStore);
 }
 //-----------------------------------------------------------------------------
-export function useUserStore() {
-    return inject(key) as UserStore;
+export function useUserStore(): UserStore {
+    return inject(userStoreKey) as UserStore;
 }

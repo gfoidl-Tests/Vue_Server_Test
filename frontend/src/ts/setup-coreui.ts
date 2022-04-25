@@ -5,7 +5,7 @@
 // import "@coreui/coreui/dist/css/coreui.css";
 import "bootstrap/dist/css/bootstrap.css";
 //-----------------------------------------------------------------------------
-import { app } from "./app";
+import { App } from "vue";
 
 import {
     CContainer,
@@ -28,7 +28,7 @@ import {
     cilTrash
 } from "@coreui/icons";
 //-----------------------------------------------------------------------------
-function registerIcons(): void {
+function registerIcons(app: App): void {
     const icons = {
         cilActionRedo,
         cilActionUndo,
@@ -38,7 +38,7 @@ function registerIcons(): void {
     app.provide("icons", icons);
 }
 //-----------------------------------------------------------------------------
-export default function setupCoreUI(): void {
+export default function setupCoreUI(app: App): void {
     app.component(CContainer.name, CContainer);
     app.component(CRow.name      , CRow);
     app.component(CCol.name      , CCol);
@@ -50,7 +50,7 @@ export default function setupCoreUI(): void {
 
     app.directive("c-tooltip", vctooltip);
 
-    registerIcons();
+    registerIcons(app);
 
     console.debug("[CoreUI] registered components, directives");
 }
