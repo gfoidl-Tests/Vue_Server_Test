@@ -1,5 +1,5 @@
 <template>
-    <footer class="float-right">
+    <footer class="float-end">
         Version: {{ version }}<br />
         © <a href="https://github.com/gfoidl">gfoidl</a>, {{ year }}
     </footer>

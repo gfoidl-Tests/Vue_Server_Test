@@ -1,16 +1,16 @@
 <template>
-    <b-container v-show="name.length > 0">
-        <b-row>
-            <b-col id="nameCol">
+    <c-container v-show="name.length > 0">
+        <c-row>
+            <c-col id="nameCol">
                 Name: <strong>{{ name }}</strong>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col id="messageCol">
+            </c-col>
+        </c-row>
+        <c-row>
+            <c-col id="messageCol">
                 Message: <strong>{{ message }}</strong>
-            </b-col>
-        </b-row>
-    </b-container>
+            </c-col>
+        </c-row>
+    </c-container>
 </template>
 
 <style lang="less" scoped>
@@ -20,7 +20,8 @@
 </style>
 
 <script lang="ts" setup>
-    import { useUserStore } from "@store/user/user";
+    import { useUserStore }           from "@store/user/user";
+    import { CContainer, CRow, CCol } from "@coreui/vue";
     //-------------------------------------------------------------------------
     const { name, message } = useUserStore();
 </script>

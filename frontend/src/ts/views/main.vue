@@ -1,17 +1,15 @@
 <template>
-    <div>
-        <form-view></form-view>
-        <hr v-show="isNameEntered" />
-        <status-view></status-view>
-        <hr v-show="isNameEntered" />
-        <history-view></history-view>
-        <hr v-show="!isNameEntered" />
-        <version></version>
-    </div>
+    <form-view></form-view>
+    <hr v-show="isNameEntered" />
+    <status-view></status-view>
+    <hr v-show="isNameEntered" />
+    <history-view></history-view>
+    <hr v-show="!isNameEntered" />
+    <version></version>
 </template>
 
 <script lang="ts">
-    import setupBootstrap                                      from "@/setup-bootstrap";
+    import setupCoreUI                                         from "@/setup-coreui";
     import { defineComponent, computed, onUnmounted, provide } from "vue";
     import { provideUserStore, useUserStore }                  from "@store/user/user";
     import GreetingHub                                         from "@hub/greeting-hub";
@@ -24,7 +22,7 @@
     // Fabalouse hack for testing with jest, otherwise there are some build
     // failures which seem strange to me...
     if (__RUN_FROM_TEST__ === undefined || !__RUN_FROM_TEST__) {
-        setupBootstrap();
+        setupCoreUI();
     } else {
         console.debug("Skipping registration of BootstrapVue PlugIn");
     }

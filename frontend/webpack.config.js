@@ -194,9 +194,9 @@ module.exports = (env, argv) => {
                         maxSize : !devMode ? 500000 : undefined, // dev-server doesn't like it
                         priority: -10
                     },
-                    bootstrap: {
-                        test  : /[\\/]node_modules[\\/](bootstrap|popper)/,
-                        name  : "bootstrap",
+                    "core-ui": {
+                        test  : /[\\/]node_modules[\\/](@coreui|bootstrap|popper)/,
+                        name  : "core-ui",
                         chunks: "all"
                     }
                 }

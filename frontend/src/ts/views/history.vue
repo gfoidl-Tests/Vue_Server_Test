@@ -1,44 +1,50 @@
 <template>
-    <b-container>
-        <b-row>
-            <b-col id="historyList" v-if="history.length > 0">
+    <c-container>
+        <c-row>
+            <c-col id="historyList" v-if="history.length > 0">
                 <h5>History of messages</h5>
 
                 <ul>
                     <li v-for="(item, index) in history" :key="index" data-test="history">
                         {{ item.message }}
-                        <b-button :id    ="'redoButton_' + index"
+                        <c-button :id    ="'redoButton_' + index"
                                   @click ="redoHistory(index)"
-                                  variant="outline-primary"
+                                  color  ="primary"
+                                  variant="outline"
                                   size   ="sm"
-                                  v-b-tooltip.hover.html="redoTooltip(item)">
-                            <b-icon-reply></b-icon-reply>
-                        </b-button>
-                        <b-button :id    ="'redoSignalRButton_' + index"
+                                  v-c-tooltip="redoTooltip(item)">
+                            <c-icon :icon="cilActionRedo"></c-icon>
+                        </c-button>
+                        <c-button :id    ="'redoSignalRButton_' + index"
                                   @click ="redoHistoryWithSignalR(index)"
-                                  variant="outline-primary"
+                                  color  ="primary"
+                                  variant="outline"
                                   size   ="sm"
-                                  v-b-tooltip.hover.html="redoSignalRTooltip(item)">
-                            <b-icon-reply-fill></b-icon-reply-fill>
-                        </b-button>
-                        <b-button :id    ="'deleteButton_' + index"
+                                  v-c-tooltip="redoSignalRTooltip(item)">
+                            <c-icon :icon="cilActionUndo"></c-icon>
+                        </c-button>
+                        <c-button :id    ="'deleteButton_' + index"
                                   @click ="removeFromHistory(index)"
-                                  variant="outline-secondary"
+                                  color  ="secondary"
+                                  variant="outline"
                                   size   ="sm"
-                                  v-b-tooltip.hover
-                                  title  ="Remove from history">
-                            <b-icon-trash></b-icon-trash>
-                        </b-button>
+                                  v-c-tooltip="'Remove from history'">
+                            <c-icon :icon="cilTrash"></c-icon>
+                        </c-button>
                     </li>
                 </ul>
-            </b-col>
-        </b-row>
-    </b-container>
+            </c-col>
+        </c-row>
+    </c-container>
 </template>
 
 <style lang="less" scoped>
     li {
         list-style: square;
+
+        button {
+            width: 32px;
+        }
     }
 </style>
 
@@ -47,13 +53,20 @@
     import { useUserStore, HistoryEntry } from "@store/user/user";
     import GreetingHub                    from "@hub/greeting-hub";
     //-------------------------------------------------------------------------
-    import { BIconReply, BIconTrash, BIconReplyFill } from "bootstrap-icons-vue";
+    import { CContainer, CRow, CCol, CButton, vctooltip } from "@coreui/vue";
+    import { CIcon }                                      from "@coreui/icons-vue";
+    import { cilActionRedo, cilActionUndo, cilTrash }     from "@coreui/icons";
     //-------------------------------------------------------------------------
     export default defineComponent({
         components: {
-            BIconReply,
-            BIconTrash,
-            BIconReplyFill
+            CContainer,
+            CRow,
+            CCol,
+            CButton,
+            CIcon
+        },
+        directives: {
+            "c-tooltip": vctooltip
         },
         setup() {
             const { history, removeFromHistory, redoHistory } = useUserStore();
@@ -77,7 +90,10 @@
                 redoHistory,
                 redoHistoryWithSignalR,
                 redoTooltip,
-                redoSignalRTooltip
+                redoSignalRTooltip,
+                cilActionRedo,
+                cilActionUndo,
+                cilTrash
             };
         }
     });
