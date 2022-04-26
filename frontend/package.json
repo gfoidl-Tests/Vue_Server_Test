@@ -5,7 +5,7 @@
     "author"     : "gfoidl",
     "license"    : "(c) gfoidl, 2020-2022",
     "private"    : true,
-    "sideEffects": true,
+    "sideEffects": false,
     "scripts"    : {
         "build"        : "webpack --mode=development",
         "build-watch"  : "webpack --mode=development --watch",
