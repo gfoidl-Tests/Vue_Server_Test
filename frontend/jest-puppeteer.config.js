@@ -1,4 +1,4 @@
-// `serve` (yarn start-server) is just for static serving, so SignalR won't work
+// `serve` (yarn start-server) is just for static serving, so SignalR won't work.
 // With the environment-variable LOCAL_DEV one can opt-into serving via Kestrel, so
 // SignalR works.
 const serverCommand = process.env.LOCAL_DEV

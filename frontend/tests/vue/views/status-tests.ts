@@ -9,29 +9,34 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import StatusView                                    from "@view/status.vue";
-import { createLocalVue, Wrapper }                   from "@vue/test-utils";
-import { mountComposition }                          from "../mount-composition";
-import BootstrapVue                                  from "bootstrap-vue";
-import { provideUserStore, useUserStore, UserStore } from "@store/user/user";
+import StatusView                                   from "@view/status.vue";
+import { mount, VueWrapper }                        from "@vue/test-utils";
+import { createUserStore, UserStore, userStoreKey } from "@store/user/user";
+import { getGlobalMountOptionsForCoreUi }           from "../coreui-test-helper";
 //-----------------------------------------------------------------------------
 describe("Status.vue", () => {
-    let sut      : Wrapper<StatusView>;
+    const globalMountOptions = getGlobalMountOptionsForCoreUi();
+
+    let sut      : VueWrapper;
     let userStore: UserStore;
     //-------------------------------------------------------------------------
     beforeEach(() => {
-        const localVue = createLocalVue();
-        localVue.use(BootstrapVue);
+        userStore = createUserStore();
 
-        sut = mountComposition(StatusView, localVue, () => {
-            provideUserStore();
-            userStore = useUserStore();
+        sut = mount(StatusView, {
+            global: {
+                ...globalMountOptions,
+                provide: {
+                    ...globalMountOptions.provide,
+                    [userStoreKey as symbol]: userStore
+                }
+            }
         });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
         if (sut) {
-            sut.destroy();
+            sut.unmount();
         }
     });
     //-------------------------------------------------------------------------

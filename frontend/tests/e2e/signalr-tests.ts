@@ -1,5 +1,5 @@
-import { Overrides }   from "puppeteer";
-import PuppeteerHelper from "../puppeteer-helper";
+import { ContinueRequestOverrides } from "puppeteer";
+import PuppeteerHelper              from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 const conditionalDescribe = process.env.LOCAL_DEV
     ? describe
@@ -23,7 +23,7 @@ conditionalDescribe("SignalR", () => {
         newPage.on("request", request => {
             const overrides = {
                 method: "POST"
-            } as Overrides;
+            } as ContinueRequestOverrides;
 
             request.continue(overrides);
         });

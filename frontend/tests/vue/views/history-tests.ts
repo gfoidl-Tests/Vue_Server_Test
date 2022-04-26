@@ -9,29 +9,34 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import HistoryView                                   from "@view/history.vue";
-import { createLocalVue, Wrapper }                   from "@vue/test-utils";
-import { mountComposition }                          from "../mount-composition";
-import BootstrapVue                                  from "bootstrap-vue";
-import { provideUserStore, useUserStore, UserStore } from "@store/user/user";
+import HistoryView                                  from "@view/history.vue";
+import { mount, VueWrapper }                        from "@vue/test-utils";
+import { createUserStore, UserStore, userStoreKey } from "@store/user/user";
+import { getGlobalMountOptionsForCoreUi }           from "../coreui-test-helper";
 //-----------------------------------------------------------------------------
 describe("History.vue", () => {
-    let sut      : Wrapper<HistoryView>;
+    const globalMountOptions = getGlobalMountOptionsForCoreUi();
+
+    let sut      : VueWrapper;
     let userStore: UserStore;
     //-------------------------------------------------------------------------
     beforeEach(() => {
-        const localVue = createLocalVue();
-        localVue.use(BootstrapVue);
+        userStore = createUserStore();
 
-        sut = mountComposition(HistoryView, localVue, () => {
-            provideUserStore();
-            userStore = useUserStore();
+        sut = mount(HistoryView, {
+            global: {
+                ...globalMountOptions,
+                provide: {
+                    ...globalMountOptions.provide,
+                    [userStoreKey as symbol]: userStore
+                }
+            }
         });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
         if (sut) {
-            sut.destroy();
+            sut.unmount();
         }
     });
     //-------------------------------------------------------------------------
@@ -47,7 +52,7 @@ describe("History.vue", () => {
 
         expect(sut.find("#historyList").exists()).toBe(true);
         expect(dataTestItems.length).toBe(1);
-        expect(dataTestItems.at(0).text()).toMatch(/Hi batman/);
+        expect(dataTestItems[0].text()).toMatch(/Hi batman/);
         expect.assertions(3);
     });
     //-------------------------------------------------------------------------

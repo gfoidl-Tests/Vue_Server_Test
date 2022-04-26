@@ -17,7 +17,7 @@ for logFile in *; do
     fi
 
     if [[ -n $VERIFY_CLIENT_REQUEST ]]; then
-        if [[ $(cat $logFile | grep "/api/greeting/hello?name=" | wc -l) -eq 0 ]]; then
+        if [[ $(cat $logFile | grep "/api/greeting/hello" | wc -l) -eq 0 ]]; then
             echo "    no log entry for client request"
             ((failures++))
         fi

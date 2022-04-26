@@ -1,0 +1,10 @@
+/.vs
+node_modules
+dist
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+#!.yarn/sdks    # bootstrap.sh is needed
+!.yarn/versions

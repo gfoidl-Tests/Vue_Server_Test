@@ -1,20 +1,21 @@
-const { pathsToModuleNameMapper } = require("ts-jest/utils");
+const { pathsToModuleNameMapper } = require("ts-jest");
 const { compilerOptions }         = require("../../tsconfig");
 //-----------------------------------------------------------------------------
 module.exports = {
     rootDir             : "../../",
     name                : "vue",
     displayName         : "vue component tests",
+    testEnvironment     : "jsdom",
     moduleFileExtensions: ["js", "ts", "json", "vue"],
     transform           : {
-        "^.+\\.vue$": "vue-jest",
+        "^.+\\.vue$": "@vue/vue3-jest",
         "^.+\\.ts?$": "ts-jest"
     },
     testMatch: [
         "**/tests/vue/**/*.ts"
     ],
     modulePathIgnorePatterns: [
-        "mount-composition.ts"
+        "coreui-test-helper.ts"
     ],
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>" }),
@@ -29,6 +30,5 @@ module.exports = {
         __RUN_FROM_TEST__: true,
         __VERSION__      : "42",
         __BASE_URL__     : "http://localhost/"
-    },
-    setupFilesAfterEnv: ["<rootDir>/tests/composition-api-setup.ts"]
+    }
 };

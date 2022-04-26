@@ -32,14 +32,14 @@ describe("Requests", () => {
                     contentType: "application/json",
                     body       : JSON.stringify(responseData)
                 });
+
+                // Important: remove listener
+                // Here not because of a memory leak, but because of letting a different handler
+                // be registered without getting an error.
+                page.off("request", callback);
             } else {
                 request.continue();
             }
-
-            // Important: remove listener
-            // Here not because of a memory leak, but because of letting a different handler
-            // be registered without getting an error.
-            page.removeListener("request", callback);
         });
 
         // jest-puppeteer

@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { App } from "vue";
 //-----------------------------------------------------------------------------
 export interface ErrorData {
     message: string;
@@ -13,16 +13,18 @@ interface Console {
 }
 //-----------------------------------------------------------------------------
 export default class Logger {
-    public static init(): void {
+    public static init(app: App): void {
         if (!__DEBUG__) {
             //const logMethodsToDisable = ["log", "info", "warn", "error", "debug"];
             const logMethodsToDisable = ["log", "debug", "time", "timeEnd"];
             Logger.removeConsoleLogging(logMethodsToDisable);
-            
-            Vue.config.errorHandler = (err, _vm, info) => {
+
+            app.config.errorHandler = (err, _vm, info) => {
+                const error = err as Error;
+
                 const errorData: ErrorData = {
-                    message: err.message,
-                    stack  : err.stack,
+                    message: error.message,
+                    stack  : error.stack,
                     handler: "vue",
                     data   : {
                         err,

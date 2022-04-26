@@ -15,7 +15,7 @@ export interface IHttpClient {
      * const source = Axios.CancelToken.source();
      * const httpClient = new HttpClient();
      * const requestPromise = httpClient.get<string>(url, source.token);
-     * 
+     *
      * source.cancel("Operation cancelled by user");
      * ```
      */
@@ -94,7 +94,7 @@ export class HttpClient implements IHttpClient {
 
             return response.data;
         } catch (error) {
-            this.handleError(url, error);
+            this.handleError(url, error as AxiosError);
         }
     }
     //-------------------------------------------------------------------------
@@ -117,7 +117,7 @@ export class HttpClient implements IHttpClient {
 
             return response.data;
         } catch (error) {
-            this.handleError(url, error);
+            this.handleError(url, error as AxiosError);
         }
     }
     //-------------------------------------------------------------------------

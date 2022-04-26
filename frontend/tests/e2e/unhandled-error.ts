@@ -29,12 +29,11 @@ describe("Unhandled errors", () => {
                     postData = JSON.parse(data);
                 }
 
+                page.off("request", callback);
                 request.respond({ status: 200 });
             } else {
                 request.continue();
             }
-
-            page.removeListener("request", callback);
         });
 
         await expect(page).toClick("#errorButton");

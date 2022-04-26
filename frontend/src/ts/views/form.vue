@@ -1,33 +1,34 @@
 <template>
-    <b-container>
-        <b-row>
-            <b-col>
-                <b-form @submit.prevent="hello" @reset.prevent="reset">
-                    <b-form-group id="nameGroup" label="Name" label-for="nameInput">
-                        <b-form-input id="nameInput" v-model="name" required placeholder="Name" autocomplete="off"></b-form-input>
-                    </b-form-group>
+    <c-container>
+        <c-row>
+            <c-col>
+                <c-form @submit.prevent="hello" @reset.prevent="reset">
+                    <div class="mb-3">
+                        <c-form-label for="nameInput">Name</c-form-label>
+                        <c-form-input id="nameInput" v-model="name" required placeholder="Name" autocomplete="off"></c-form-input>
+                    </div>
 
-                    <b-button id="sendButton" type="submit" variant="primary" :disabled="name.length === 0">Say Hi</b-button>
-                    <b-button id="resetButton" type="reset" variant="danger">Reset</b-button>
-                </b-form>
+                    <c-button id="sendButton" type="submit" color="primary" :disabled="name.length === 0">Say Hi</c-button>
+                    <c-button id="resetButton" type="reset" color="danger">Reset</c-button>
+                </c-form>
 
-                <b-row v-if="message.length > 0">
-                    <b-col>
+                <c-row v-if="message.length > 0">
+                    <c-col>
                         <hr />
                         Message: <strong class="message" id="messageSpan">{{ message }}</strong>
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
+                    </c-col>
+                </c-row>
+            </c-col>
+        </c-row>
 
         <hr />
 
-        <b-row>
-            <b-col>
-                <b-button id="errorButton" variant="outline-info" @click="throwError">Throw unhandled error</b-button>
-            </b-col>
-        </b-row>
-    </b-container>
+        <c-row>
+            <c-col>
+                <c-button id="errorButton" color="info" variant="outline" @click="throwError">Throw unhandled error</c-button>
+            </c-col>
+        </c-row>
+    </c-container>
 </template>
 
 <style lang="less" scoped>
@@ -37,7 +38,7 @@
 </style>
 
 <script lang="ts">
-    import { defineComponent } from "@vue/composition-api";
+    import { defineComponent } from "vue";
     import { useUserStore }    from "@store/user/user";
     //-------------------------------------------------------------------------
     function throwError(): void {

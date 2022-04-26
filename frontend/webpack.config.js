@@ -1,11 +1,10 @@
-const { CleanWebpackPlugin }     = require("clean-webpack-plugin");
+const CssMinimizerPlugin         = require("css-minimizer-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const GitRevisionPlugin          = require("git-revision-webpack-plugin");
+const { GitRevisionPlugin }      = require("git-revision-webpack-plugin");
 const HtmlWebpackPlugin          = require("html-webpack-plugin");
 const MiniCssExtractPlugin       = require("mini-css-extract-plugin");
-const OptimizeCssPlugin          = require("optimize-css-assets-webpack-plugin");
 const path                       = require("path");
-const PreloadWebpackPlugin       = require("preload-webpack-plugin");
+const PreloadWebpackPlugin       = require("@vue/preload-webpack-plugin");
 const svgToMiniDataUri           = require("mini-svg-data-uri");
 const TerserPlugin               = require("terser-webpack-plugin");
 const TsconfigPathsPlugin        = require("tsconfig-paths-webpack-plugin");
@@ -27,13 +26,6 @@ module.exports = (env, argv) => {
     const tsConfigFile      = path.resolve(__dirname, "src", "ts", "tsconfig.json");
     const gitRevisionPlugin = new GitRevisionPlugin();
 
-    const imgBaseOptions = {
-        esModule  : false,                              // https://github.com/vuejs/vue-loader/issues/1612
-        limit     : 8192,                               // bytes
-        name      : devMode ? "[name].[ext]" : "[name].[contenthash:8].[ext]",
-        outputPath: "images"
-    };
-
     const config = {
         mode   : devMode ? "development" : "production",
         context: path.resolve(__dirname, "src", "ts"),  // resolve vs. join -> https://stackoverflow.com/a/39836259/347870
@@ -54,11 +46,10 @@ module.exports = (env, argv) => {
             plugins: [new TsconfigPathsPlugin({ configFile: tsConfigFile })]
         },
         output: {
-            path      : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot", "assets"),
-            // Don't make it relative to root (i.e. no leading /), so that it can be hosted everywhere (e.g. GH-pages)
-            // Trailing / is mandatory, as the strings are just concatenated instead of handled properly :-(
-            publicPath: "assets/",
-            filename  : devMode ? "[name].js" : "[name].[contenthash:8].js"
+            path    : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot"),
+            filename: devMode ? "[name].js" : "[name].[contenthash:8].js",
+            clean   : true,
+            assetModuleFilename: devMode ? "images/[name][ext][query]" : "images/[name].[hash][ext][query]"    // for asset modules name
         },
         module: {
             rules: [
@@ -69,7 +60,6 @@ module.exports = (env, argv) => {
                     exclude: /node_modules/,
                     options: {
                         transpileOnly       : true,     // ForkTsCheckerWebpackPlugin is used for compilation errors
-                        experimentalWatchApi: true,
                         appendTsSuffixTo    : [/\.vue$/]
                     }
                 },
@@ -100,9 +90,8 @@ module.exports = (env, argv) => {
                     test: /\.(le|c)ss$/,
                     use : [
                         {
-                            loader: MiniCssExtractPlugin.loader,
+                            loader : MiniCssExtractPlugin.loader,
                             options: {
-                                esModule  : true,       // enables e.g. tree-shaking
                                 publicPath: "./"        // CSS-path are relative to the CSS-file location
                             }
                         },
@@ -118,16 +107,18 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test: /\.(png|jpg|gif)$/i,
-                    loader : "url-loader",
-                    options: imgBaseOptions
+                    test: /\.(png|jpg|jpeg|gif)$/i,
+                    // type: "asset/resource"
+                    type: "asset"                       // automatically chooses between exporting a data URI and emitting a separate file
                 },
                 {
-                    test   : /\.svg$/i,
-                    loader : "url-loader",
-                    options: {
-                        ...imgBaseOptions,
-                        generator: content => svgToMiniDataUri(content.toString())
+                    test     : /\.svg/i,
+                    type     : "asset/inline",
+                    generator: {
+                        dataUrl: content => {
+                            content = content.toString();
+                            return svgToMiniDataUri(content);
+                        }
                     }
                 }
             ]
@@ -139,17 +130,23 @@ module.exports = (env, argv) => {
                 __VERSION__      : JSON.stringify(gitRevisionPlugin.version()),
                 __BASE_URL__     : JSON.stringify("/"), // for use with proxy, otherwise use line below
                 //__BASE_URL__     : JSON.stringify(devMode ? "https://localhost:44369/" : "/"),
-                __RUN_FROM_TEST__: false
+                __RUN_FROM_TEST__: false,
+
+                // For vue's esm-bundler
+                __VUE_OPTIONS_API__  : false,
+                __VUE_PROD_DEVTOOLS__: false
             }),
-            new Webpack.HashedModuleIdsPlugin(),
             new VueLoaderPlugin(),
             new ForkTsCheckerWebpackPlugin({
-                async     : false,
+                async     : true,
                 typescript: {
                     configFile : tsConfigFile,
                     memoryLimit: 4096,
                     extensions: {
-                        vue: true
+                        vue: {
+                            enabled : true,
+                            compiler: "vue/compiler-sfc"
+                        }
                     }
                 },
             }),
@@ -158,8 +155,7 @@ module.exports = (env, argv) => {
                 chunkFilename: devMode ? "[id].css"   : "[id].[contenthash:8].css"
             }),
             new HtmlWebpackPlugin({
-                template: "../index.html",
-                filename: path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot", "index.html"),
+                template: "../index.html"
             }),
             new PreloadWebpackPlugin({
                 rel          : "preload",
@@ -175,6 +171,7 @@ module.exports = (env, argv) => {
             })
         ],
         optimization: {
+            moduleIds   : devMode ? "named" : "deterministic",
             runtimeChunk: "single",
             splitChunks : {                             // https://webpack.js.org/plugins/split-chunks-plugin/
                 chunks     : "all",                     // initial -> needed at entry instantly
@@ -197,51 +194,47 @@ module.exports = (env, argv) => {
                         maxSize : !devMode ? 500000 : undefined, // dev-server doesn't like it
                         priority: -10
                     },
-                    bootstrap: {
-                        test  : /[\\/]node_modules[\\/](bootstrap|popper)/,
-                        name  : "bootstrap",
+                    "core-ui": {
+                        test  : /[\\/]node_modules[\\/](@coreui|bootstrap|popper)/,
+                        name  : "core-ui",
                         chunks: "all"
                     }
                 }
             },
             minimizer: [
                 new TerserPlugin({}),
-                new OptimizeCssPlugin({})
+                new CssMinimizerPlugin()
             ]
         },
-        devtool  : "cheap-source-map",                  // https://webpack.js.org/configuration/devtool/
+        devtool  : devMode ? "cheap-source-map" : "source-map", // eval variants execute the code as eval(code), so not readable in the output
         devServer: {
-            contentBase       : path.resolve(__dirname, "..", "backend", "source", "Server", "wwwroot"),
-            watchContentBase  : true,
             historyApiFallback: true,
+            port  : 8080,
+            hot   : "only",
+            static: false,
+            client: {
+                overlay: {
+                    errors  : true,
+                    warnings: false,
+                },
+                // progress: true                       // Too much noise in console logs of browser
+            },
             // proxy doesn't work with Windows-Auth
             // Below is the "short-form"
-            //proxy             : {
+            //proxy: {
             //    "/api": {
             //        target: "https://localhost:44369",
             //        secure: false                       // for HTTPS with self-signed certificate
             //    }
             //}
-            proxy: [{
+            proxy: {
                 context: ["/api", "/health", "/hubs"],
                 target : "https://localhost:44369",
                 secure : false,                         // for HTTPS with self-signed certificate
                 ws     : true                           // for SignalR / Websockets
-            }]
-        },
-        // Hack for "Can't resolve 'fs'" (from winston), cf. https://webpack.js.org/configuration/node/ and https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
-        node: {
-            fs: "empty"
+            }
         }
     };
-
-    // Inject CleanWebpackPlugin when not using dev-server. With the dev-server
-    // there is a deadlock anywhere :-(
-    const runsInDevServer = /webpack-dev-server.js$/.test(argv.$0);
-    if (!runsInDevServer) {
-        config.plugins.unshift(new CleanWebpackPlugin());
-        console.log("added CleanWebpackPlugin");
-    }
 
     if (process.env.ANALYZE) {
         const analyzer = new BundleAnalyzerPlugin.BundleAnalyzerPlugin();

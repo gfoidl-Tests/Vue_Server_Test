@@ -1,6 +1,6 @@
-import { baseUrl, screenshotDir } from "./test-helper";
-import { Overrides }              from "puppeteer";
-import PuppeteerHelper            from "../puppeteer-helper";
+import { baseUrl, screenshotDir }   from "./test-helper";
+import { ContinueRequestOverrides } from "puppeteer";
+import PuppeteerHelper              from "../puppeteer-helper";
 //-----------------------------------------------------------------------------
 describe("SignalR", () => {
     beforeEach(async () => {
@@ -16,7 +16,7 @@ describe("SignalR", () => {
         newPage.on("request", request => {
             const overrides = {
                 method: "POST"
-            } as Overrides;
+            } as ContinueRequestOverrides;
 
             request.continue(overrides);
         });

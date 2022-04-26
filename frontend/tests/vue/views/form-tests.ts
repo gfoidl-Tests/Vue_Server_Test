@@ -16,13 +16,11 @@ jest.mock("@store/user/greeting-service", () => {
     };
 });
 //-----------------------------------------------------------------------------
-import FormView                    from "@view/form.vue";
-import { provideUserStore }        from "@store/user/user";
-import GreetingService             from "@store/user/greeting-service";
-import { createLocalVue, Wrapper } from "@vue/test-utils";
-import { mountComposition }        from "../mount-composition";
-import BootstrapVue                from "bootstrap-vue";
-import flushPromises               from "flush-promises";
+import FormView                                     from "@view/form.vue";
+import GreetingService                              from "@store/user/greeting-service";
+import { mount, VueWrapper, flushPromises }         from "@vue/test-utils";
+import { createUserStore, UserStore, userStoreKey } from "@store/user/user";
+import { getGlobalMountOptionsForCoreUi }           from "../coreui-test-helper";
 //-----------------------------------------------------------------------------
 const MockedGreetingService = (GreetingService as unknown) as jest.Mock<GreetingService>;
 //-----------------------------------------------------------------------------
@@ -32,26 +30,34 @@ beforeEach(() => {
 });
 //-----------------------------------------------------------------------------
 describe("Main.vue", () => {
-    let sut: Wrapper<FormView>;
+    const globalMountOptions = getGlobalMountOptionsForCoreUi();
+
+    let sut      : VueWrapper;
+    let userStore: UserStore;
     //-------------------------------------------------------------------------
     beforeEach(() => {
-        const localVue = createLocalVue();
-        localVue.use(BootstrapVue);
+        userStore = createUserStore();
 
-        sut = mountComposition(FormView, localVue, () => {
-            provideUserStore();
+        sut = mount(FormView, {
+            global: {
+                ...globalMountOptions,
+                provide: {
+                    ...globalMountOptions.provide,
+                    [userStoreKey as symbol]: userStore
+                }
+            }
         });
     });
     //-------------------------------------------------------------------------
     afterEach(() => {
         if (sut) {
-            sut.destroy();
+            sut.unmount();
         }
     });
     //-------------------------------------------------------------------------
     test("no name entered -> sendButton disabled, no message shown", () => {
         const sendButton = sut.get("#sendButton");
-        expect(sendButton.attributes("disabled")).toBe("disabled");
+        expect(sendButton.attributes("disabled")).toBe("");
 
         //const messageCol = sut.findAll("#messageCol");
         //expect(messageCol.length).toBe(0);
@@ -81,7 +87,7 @@ describe("Main.vue", () => {
         await sut.get("form").trigger("reset");
 
         expect(nameInput.text().length).toBe(0);
-        expect(sendButton.attributes("disabled")).toBe("disabled");
+        expect(sendButton.attributes("disabled")).toBe("");
 
         expect.assertions(3);
     });
@@ -93,7 +99,7 @@ describe("Main.vue", () => {
         mockHello.mockResolvedValue("Hi himen");
 
         sut.get("form").trigger("submit");
-        // https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue
+        // https://test-utils.vuejs.org/api/#flushpromises
         await flushPromises();
 
         const messageSpan = sut.find("#messageSpan");

@@ -14,7 +14,7 @@ const config = {
         "**/*.ts"
     ],
     modulePathIgnorePatterns: [
-        "helper.ts"
+        "test-helper.ts"
     ],
     testTimeout
 };

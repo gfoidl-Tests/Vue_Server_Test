@@ -12,5 +12,5 @@ module.exports = {
     modulePathIgnorePatterns: [
         "helper.ts"
     ],
-    testTimeout: 3145
+    testTimeout: 5000
 };
