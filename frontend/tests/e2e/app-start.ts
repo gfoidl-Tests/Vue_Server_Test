@@ -21,4 +21,8 @@ describe("App start", () => {
     test("check if Vue started by checking #sendButton", async () => {
         await expect(page).toMatchElement("#sendButton");
     });
+    //-------------------------------------------------------------------------
+    test("fail to see what happens in CI", () => {
+        expect(1).toBe(0);
+    });
 });
