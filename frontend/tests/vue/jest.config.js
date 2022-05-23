@@ -3,7 +3,6 @@ const { compilerOptions }         = require("../../tsconfig");
 //-----------------------------------------------------------------------------
 module.exports = {
     rootDir             : "../../",
-    name                : "vue",
     displayName         : "vue component tests",
     testEnvironment     : "jsdom",
     moduleFileExtensions: ["js", "ts", "json", "vue"],
@@ -30,5 +29,11 @@ module.exports = {
         __RUN_FROM_TEST__: true,
         __VERSION__      : "42",
         __BASE_URL__     : "http://localhost/"
+    },
+    testEnvironmentOptions: {       // cf. https://github.com/vuejs/test-utils/issues/1525#issuecomment-1134620421
+        customExportConditions: [   // needed for jsdom testEnvironment
+            "node",
+            "node-addons"
+        ]
     }
 };

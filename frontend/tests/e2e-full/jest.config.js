@@ -3,7 +3,6 @@ const testTimeout = process.env.SERVER_TEST
     : 3145;
 
 const config = {
-    name                : "e2e-full",
     displayName         : "e2e-full tests",
     preset              : "jest-puppeteer",
     moduleFileExtensions: ["js", "ts", "json"],

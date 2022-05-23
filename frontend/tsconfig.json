@@ -16,7 +16,7 @@
         "module"          : "CommonJS",
         "moduleResolution": "Node",
         "esModuleInterop" : true,
-        "lib"             : [ "DOM", "ES2015", "WebWorker" ],
+        "lib"             : [ "DOM", "ESNext", "WebWorker" ],
         "skipLibCheck"    : true,
         "incremental"     : true,
         "declaration"     : true,

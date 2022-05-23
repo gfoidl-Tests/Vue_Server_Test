@@ -3,7 +3,6 @@ const { compilerOptions }         = require("../../tsconfig");
 //-----------------------------------------------------------------------------
 module.exports = {
     rootDir        : "../../",
-    name           : "unit",
     displayName    : "unit tests",
     testEnvironment: "node",
     preset         : "ts-jest",

@@ -14,12 +14,14 @@ import {
     CButton,
     CForm,
     CFormLabel,
-    CFormInput
+    // CFormInput,          // use patched version instead
 } from "@coreui/vue";
 
+// Patched versions:
 import {
+    CFormInput,
     vctooltip
-} from "./patches/coreui-tooltip";
+} from "./patches"
 
 import { CIcon } from "@coreui/icons-vue";
 import {
